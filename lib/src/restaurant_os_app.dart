@@ -13,6 +13,7 @@ import 'package:restaurant_os_ai/src/ui/screens/account_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/settings_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/account_info_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/change_password_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/change_email_screen.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/phase_two_screen.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
@@ -76,6 +77,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/change-password',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: ChangePasswordScreen()),
+      ),
+      GoRoute(
+        path: '/change-email',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ChangeEmailScreen()),
       ),
       ShellRoute(
         builder: (context, state, child) => AppShell(child: child),

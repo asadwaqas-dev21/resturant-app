@@ -83,7 +83,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   _SettingsItem(
                     title: 'Change email',
                     onTap: () {
-                      _showChangeEmailDialog(context, customer);
+                      context.go('/change-email');
                     },
                   ),
                   _SettingsItem(
@@ -258,30 +258,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  void _showChangeEmailDialog(BuildContext context, dynamic customer) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        titlePadding: const EdgeInsets.all(24),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 24),
-        actionsPadding: const EdgeInsets.all(24),
-        buttonPadding: const EdgeInsets.all(8),
-
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text('Change email'),
-        content: const Text(
-          'Email update feature is managed by identity provider.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
 
   void _showCountryDialog(BuildContext context) {
     showDialog(
