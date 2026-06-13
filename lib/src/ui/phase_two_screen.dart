@@ -8,7 +8,7 @@ import 'package:restaurant_os_ai/src/domain/phase_two_models.dart';
 import 'package:restaurant_os_ai/src/state/advanced_providers.dart';
 import 'package:restaurant_os_ai/src/state/phase_two_providers.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/choicepill.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/empty_state.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/iconaction_button.dart';

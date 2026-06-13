@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
 class ChoicePill extends StatelessWidget {
   const ChoicePill({

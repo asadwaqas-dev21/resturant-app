@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
 class FoodImage extends StatelessWidget {
   const FoodImage({

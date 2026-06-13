@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/choicepill.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
@@ -33,7 +33,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           onPressed: () => context.go('/onboarding'),
           icon: const Icon(Iconsax.arrow_left_2),
         ),
-        title: Text(_roleTitle),
+        title: Text(_roleTitle, style: Theme.of(context).textTheme.headlineSmall),
       ),
       body: SafeArea(
         child: ConstrainedBox(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/label_pill.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/status_pill.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';

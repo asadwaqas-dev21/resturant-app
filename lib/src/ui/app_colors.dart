@@ -43,7 +43,9 @@ ThemeData buildAppTheme({
       foregroundColor: AppColors.ink,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: textTheme.titleLarge,
+      titleTextStyle: textTheme.titleMedium,
+      
+
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

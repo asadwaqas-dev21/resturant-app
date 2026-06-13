@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
-import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
 class StatusPill extends StatelessWidget {
   const StatusPill({super.key, required this.status});

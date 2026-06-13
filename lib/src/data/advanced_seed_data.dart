@@ -1,4 +1,4 @@
-import '../domain/advanced_models.dart';
+import 'package:restaurant_os_ai/src/domain/advanced_models.dart';
 
 const demoAiRecommendations = [
   AiRecommendation(

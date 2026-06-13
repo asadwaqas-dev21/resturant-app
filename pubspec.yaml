@@ -53,13 +53,13 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/applogo.png"
+  image_path: "assets/aaplogo.jpeg"
   web:
     generate: true
-    image_path: "assets/applogo.png"
+    image_path: "assets/aaplogo.jpeg"
   windows:
     generate: true
-    image_path: "assets/applogo.png"
+    image_path: "assets/aaplogo.jpeg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -73,7 +73,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/applogo.png
+    - assets/aaplogo.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
