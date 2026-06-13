@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../data/advanced_seed_data.dart';
-import '../domain/advanced_models.dart';
+import 'package:restaurant_os_ai/src/data/advanced_seed_data.dart';
+import 'package:restaurant_os_ai/src/domain/advanced_models.dart';
 
 final aiRecommendationsProvider = Provider<List<AiRecommendation>>(
   (ref) => demoAiRecommendations,

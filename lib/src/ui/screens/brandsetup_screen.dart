@@ -25,7 +25,7 @@ class BrandSetupScreen extends ConsumerWidget {
           onPressed: () => context.go('/onboarding'),
           icon: const Icon(Iconsax.arrow_left_2),
         ),
-        title: const Text('Brand setup'),
+        title: const Text('Brand setup', style: TextStyle(fontSize: 19)),
       ),
       body: SafeArea(
         child: Center(

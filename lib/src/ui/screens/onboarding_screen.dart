@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/choicepill.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
@@ -29,7 +28,15 @@ class OnboardingScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Logo(initials: restaurant.logoInitials, size: 48),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          'assets/aaplogo.jpeg',
+                          width: 48,
+                          height: 48,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(

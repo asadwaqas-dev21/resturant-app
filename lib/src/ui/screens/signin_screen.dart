@@ -33,7 +33,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           onPressed: () => context.go('/onboarding'),
           icon: const Icon(Iconsax.arrow_left_2),
         ),
-        title: Text(_roleTitle, style: Theme.of(context).textTheme.headlineSmall),
+        title: Text(_roleTitle, style: Theme.of(context).textTheme.titleMedium),
       ),
       body: SafeArea(
         child: ConstrainedBox(
