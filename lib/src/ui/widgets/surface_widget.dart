@@ -22,27 +22,27 @@ class Surface extends StatelessWidget {
   Widget build(BuildContext context) {
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(radius),
+      side: const BorderSide(color: AppColors.border, width: 0.5),
     );
-    final content = Container(
+
+    Widget content = Padding(
       padding: padding,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(radius),
-        border: Border.all(color: AppColors.border, width: 0.5),
-      ),
       child: child,
     );
 
-    if (onTap == null) return content;
+    if (onTap != null) {
+      content = InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(radius),
+        child: content,
+      );
+    }
 
     return Material(
-      color: Colors.transparent,
+      color: color,
       shape: shape,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(radius),
-        onTap: onTap,
-        child: content,
-      ),
+      clipBehavior: Clip.antiAlias,
+      child: content,
     );
   }
 }

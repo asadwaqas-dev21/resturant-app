@@ -78,15 +78,15 @@ class DesktopNav extends ConsumerWidget {
             currentPath: currentPath,
           ),
           _NavItem(
-            label: 'Cart',
-            icon: Iconsax.shopping_cart,
-            path: '/cart',
+            label: 'Account',
+            icon: Iconsax.user,
+            path: '/account',
             currentPath: currentPath,
-            count: cart.itemCount,
           ),
           const Spacer(),
           Surface(
             color: AppColors.surfaceAlt,
+            onTap: () => context.go('/account'),
             child: Row(
               children: [
                 const Icon(Iconsax.wallet, color: AppColors.teal),

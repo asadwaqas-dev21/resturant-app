@@ -2123,7 +2123,7 @@ class _PhaseMetrics extends StatelessWidget {
       crossAxisCount: columns,
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
-      childAspectRatio: columns == 1 ? 4.6 : 3.1,
+      childAspectRatio: columns == 1 ? 3.8 : 3.1,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: [

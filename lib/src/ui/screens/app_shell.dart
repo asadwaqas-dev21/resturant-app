@@ -83,8 +83,8 @@ class AppShell extends ConsumerWidget {
           ),
           NavigationDestination(icon: Icon(Iconsax.cpu_setting), label: 'Ops'),
           NavigationDestination(
-            icon: Icon(Iconsax.shopping_cart),
-            label: 'Cart',
+            icon: Icon(Iconsax.user),
+            label: 'Account',
           ),
         ],
       ),

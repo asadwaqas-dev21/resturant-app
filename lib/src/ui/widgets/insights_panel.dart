@@ -152,7 +152,7 @@ int selectedIndex(String path) {
       path.startsWith('/phase2')) {
     return 2;
   }
-  if (path.startsWith('/cart')) return 3;
+  if (path.startsWith('/account')) return 3;
   return 0;
 }
 
@@ -163,7 +163,7 @@ String navPath(int index) {
     case 2:
       return '/workspace';
     case 3:
-      return '/cart';
+      return '/account';
     case 0:
     default:
       return '/';

@@ -9,6 +9,7 @@ import 'package:restaurant_os_ai/src/ui/screens/dashboard_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/onboarding_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/orders_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/signin_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/account_screen.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/phase_two_screen.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
@@ -77,6 +78,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/cart',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: CartScreen()),
+          ),
+          GoRoute(
+            path: '/account',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: AccountScreen()),
           ),
         ],
       ),
