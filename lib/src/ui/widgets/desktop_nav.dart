@@ -130,8 +130,7 @@ class _NavItem extends StatelessWidget {
     required this.icon,
     required this.path,
     required this.currentPath,
-    this.count,
-  });
+  }) : count = null;
 
   final String label;
   final IconData icon;

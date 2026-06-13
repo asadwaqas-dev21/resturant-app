@@ -235,32 +235,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-  void _showAccountInfoDialog(BuildContext context, dynamic customer) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Account info'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Full Name: ${customer.fullName}'),
-            const SizedBox(height: 8),
-            Text('Total Orders: ${customer.totalOrders}'),
-            const SizedBox(height: 8),
-            Text('Loyalty Points: ${customer.loyaltyPoints}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showAddressesDialog(BuildContext context) {
     showDialog(
       context: context,

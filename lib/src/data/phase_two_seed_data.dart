@@ -111,9 +111,9 @@ const demoCrmCustomers = [
     segment: 'VIP',
     orders: 8,
     totalSpent: 9860,
-    loyaltyPoints: 240,
+    loyaltyPoints: 0,
     lastOrderDaysAgo: 1,
-    walletBalance: 1800,
+    walletBalance: 0,
   ),
   CrmCustomer(
     id: 'crm-omar',

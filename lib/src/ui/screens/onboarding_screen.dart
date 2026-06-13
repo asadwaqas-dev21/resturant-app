@@ -46,7 +46,9 @@ class OnboardingScreen extends ConsumerWidget {
                               restaurant.appName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 28),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleLarge?.copyWith(fontSize: 28),
                             ),
                             Text(
                               restaurant.branchName,
@@ -196,4 +198,3 @@ class _OnboardingAction extends StatelessWidget {
     );
   }
 }
-

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/domain/models.dart';
 import 'package:restaurant_os_ai/src/state/phase_two_providers.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
@@ -414,10 +413,9 @@ class _FlatListTile extends StatelessWidget {
     this.icon,
     this.customIcon,
     this.trailingText,
-    this.trailing,
     this.titleColor,
     this.iconColor,
-  });
+  }) : trailing = null;
 
   final String title;
   final VoidCallback onTap;
