@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:restaurant_os_ai/src/ui/screens.dart';
-
+import 'package:restaurant_os_ai/src/ui/widgets/cart_panel.dart';
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 

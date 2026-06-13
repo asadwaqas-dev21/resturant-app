@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-
-import '../domain/advanced_models.dart';
-import '../domain/models.dart';
-import '../domain/phase_two_models.dart';
-import '../state/advanced_providers.dart';
-import '../state/phase_two_providers.dart';
-import '../state/providers.dart';
-import 'theme.dart';
-import 'widgets.dart';
+import 'package:restaurant_os_ai/src/domain/advanced_models.dart';
+import 'package:restaurant_os_ai/src/domain/models.dart';
+import 'package:restaurant_os_ai/src/domain/phase_two_models.dart';
+import 'package:restaurant_os_ai/src/state/advanced_providers.dart';
+import 'package:restaurant_os_ai/src/state/phase_two_providers.dart';
+import 'package:restaurant_os_ai/src/state/providers.dart';
+import 'package:restaurant_os_ai/src/ui/theme.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/choicepill.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/empty_state.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/iconaction_button.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/label_pill.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/matric_tile.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/status_pill.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class PhaseTwoScreen extends ConsumerStatefulWidget {
   const PhaseTwoScreen({super.key});

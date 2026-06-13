@@ -6,7 +6,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/theme.dart';
-import 'package:restaurant_os_ai/src/ui/widgets.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class InsightsPanel extends ConsumerWidget {
   const InsightsPanel({super.key});
@@ -113,7 +114,7 @@ class _InsightTile extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  const Logo({required this.initials, this.size = 42});
+  const Logo({super.key, required this.initials, this.size = 42});
 
   final String initials;
   final double size;

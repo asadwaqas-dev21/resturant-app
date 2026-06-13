@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
-import 'package:restaurant_os_ai/src/ui/screens/order_lane.dart';
-import 'package:restaurant_os_ai/src/ui/widgets.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/empty_state.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/order_lane.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class LiveOrderBoard extends StatelessWidget {
   const LiveOrderBoard({super.key, required this.orders});

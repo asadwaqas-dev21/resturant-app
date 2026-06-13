@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/ui/screens/insights_panel.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/choicepill.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
 import 'package:restaurant_os_ai/src/ui/theme.dart';
-import 'package:restaurant_os_ai/src/ui/widgets.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class BrandSetupScreen extends ConsumerWidget {
   const BrandSetupScreen({super.key});

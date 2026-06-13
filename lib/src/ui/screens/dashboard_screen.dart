@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/ui/screens/insights_panel.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
 import 'package:restaurant_os_ai/src/ui/screens/liveorder_board.dart';
-import 'package:restaurant_os_ai/src/ui/screens/manu_management.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/manu_management.dart';
 import 'package:restaurant_os_ai/src/ui/theme.dart';
-import 'package:restaurant_os_ai/src/ui/widgets.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/matric_tile.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});

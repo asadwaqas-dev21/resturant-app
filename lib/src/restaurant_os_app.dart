@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restaurant_os_ai/src/ui/screens/app_shell.dart';
-import 'package:restaurant_os_ai/src/ui/screens/brand_setupscree.dart';
+import 'package:restaurant_os_ai/src/ui/screens/brandsetup_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/cart_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/customer_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/dashboard_screen.dart';

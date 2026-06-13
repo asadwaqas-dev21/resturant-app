@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/ui/screens/insights_panel.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
 import 'package:restaurant_os_ai/src/ui/theme.dart';
 
 class AppShell extends ConsumerWidget {

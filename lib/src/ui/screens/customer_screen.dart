@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
-import 'package:restaurant_os_ai/src/ui/screens/filter_bar.dart';
-import 'package:restaurant_os_ai/src/ui/screens/menu_carditem.dart';
-import 'package:restaurant_os_ai/src/ui/screens/restarant_hero.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/empty_state.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/filter_bar.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/menu_carditem.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/restarant_hero.dart';
 import 'package:restaurant_os_ai/src/ui/theme.dart';
-import 'package:restaurant_os_ai/src/ui/widgets.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
 
 class CustomerScreen extends ConsumerWidget {
   const CustomerScreen({super.key});
