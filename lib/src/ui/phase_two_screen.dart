@@ -237,11 +237,11 @@ class _HubModuleCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(11),
+              padding: const EdgeInsets.all(5),
               child: Icon(module.icon, color: module.color),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,10 +318,13 @@ class KitchenDisplayTab extends ConsumerWidget {
           const SectionTitle(title: 'Kitchen display'),
           const SizedBox(height: 12),
           if (kitchenOrders.isEmpty)
-            const EmptyState(
-              icon: Iconsax.monitor,
-              title: 'No kitchen tickets',
-              body: 'Confirmed and preparing orders appear here.',
+            const SizedBox(
+              width: double.infinity,
+              child: EmptyState(
+                icon: Iconsax.monitor,
+                title: 'No kitchen tickets',
+                body: 'Confirmed and preparing orders appear here.',
+              ),
             )
           else
             GridView.builder(
@@ -813,41 +816,92 @@ class WalletAndReferralPanel extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Surface(
-            color: AppColors.surfaceAlt,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Referral ${referral.code}',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  '${referral.invitesSent} invites | ${referral.conversions} conversions | ${money(referral.rewardAmount)} reward',
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    OutlinedButton.icon(
-                      onPressed: ref
-                          .read(referralProgramProvider.notifier)
-                          .sendInvite,
-                      icon: const Icon(Iconsax.sms, size: 17),
-                      label: const Text('Send invite'),
-                    ),
-                    OutlinedButton.icon(
-                      onPressed: ref
-                          .read(referralProgramProvider.notifier)
-                          .recordConversion,
-                      icon: const Icon(Iconsax.tick_circle, size: 17),
-                      label: const Text('Record conversion'),
-                    ),
-                  ],
-                ),
-              ],
+          SizedBox(
+            width: double.infinity,
+            child: Surface(
+              color: AppColors.surfaceAlt,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isNarrow = constraints.maxWidth < 680;
+
+                  final details = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Referral ${referral.code}',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${referral.invitesSent} invites | ${referral.conversions} conversions | ${money(referral.rewardAmount)} reward',
+                        style: isNarrow ? const TextStyle(fontSize: 12) : null,
+                      ),
+                    ],
+                  );
+
+                  final buttons = Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: ref
+                            .read(referralProgramProvider.notifier)
+                            .sendInvite,
+                        icon: const Icon(Iconsax.sms, size: 16),
+                        label: const Text(
+                          'Send invite',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        style: isNarrow
+                            ? OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 8,
+                                ),
+                                textStyle: const TextStyle(fontSize: 11),
+                              )
+                            : null,
+                      ),
+                      const SizedBox(width: 8),
+                      OutlinedButton.icon(
+                        onPressed: ref
+                            .read(referralProgramProvider.notifier)
+                            .recordConversion,
+                        icon: const Icon(Iconsax.tick_circle, size: 15),
+                        label: const Text(
+                          'Record conversion',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        style: isNarrow
+                            ? OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 6,
+                                ),
+                                textStyle: const TextStyle(fontSize: 11),
+                              )
+                            : null,
+                      ),
+                    ],
+                  );
+
+                  if (isNarrow) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [details, const SizedBox(height: 12), buttons],
+                    );
+                  }
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(child: details),
+                      const SizedBox(width: 16),
+                      buttons,
+                    ],
+                  );
+                },
+              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -1476,9 +1530,7 @@ class AiActionPanel extends StatelessWidget {
                               ?.copyWith(color: AppColors.muted),
                         ),
                         const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
+                        Row(
                           children: [
                             LabelPill(
                               label:
@@ -1486,10 +1538,13 @@ class AiActionPanel extends StatelessWidget {
                               icon: Iconsax.ranking,
                               color: AppColors.teal,
                             ),
-                            LabelPill(
-                              label: recommendation.action,
-                              icon: Iconsax.tick_circle,
-                              color: AppColors.blue,
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: LabelPill(
+                                label: recommendation.action,
+                                icon: Iconsax.tick_circle,
+                                color: AppColors.blue,
+                              ),
                             ),
                           ],
                         ),
@@ -1826,33 +1881,42 @@ class WhiteLabelPanel extends ConsumerWidget {
           const SizedBox(height: 14),
           Text('Brand palette', style: Theme.of(context).textTheme.labelLarge),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+          Row(
             children: [
-              _PaletteButton(
-                label: 'Amber',
-                primaryHex: '#FF6B35',
-                secondaryHex: '#F7F3EC',
-                onSelected: controller.applyBrandColors,
+              Expanded(
+                child: _PaletteButton(
+                  label: 'Amber',
+                  primaryHex: '#FF6B35',
+                  secondaryHex: '#F7F3EC',
+                  onSelected: controller.applyBrandColors,
+                ),
               ),
-              _PaletteButton(
-                label: 'Spice',
-                primaryHex: '#9D2F2F',
-                secondaryHex: '#FFF1E7',
-                onSelected: controller.applyBrandColors,
+              const SizedBox(width: 4),
+              Expanded(
+                child: _PaletteButton(
+                  label: 'Spice',
+                  primaryHex: '#9D2F2F',
+                  secondaryHex: '#FFF1E7',
+                  onSelected: controller.applyBrandColors,
+                ),
               ),
-              _PaletteButton(
-                label: 'Mint',
-                primaryHex: '#176B63',
-                secondaryHex: '#EAF6F3',
-                onSelected: controller.applyBrandColors,
+              const SizedBox(width: 8),
+              Expanded(
+                child: _PaletteButton(
+                  label: 'Mint',
+                  primaryHex: '#176B63',
+                  secondaryHex: '#EAF6F3',
+                  onSelected: controller.applyBrandColors,
+                ),
               ),
-              _PaletteButton(
-                label: 'Royal',
-                primaryHex: '#3457D5',
-                secondaryHex: '#EEF2FF',
-                onSelected: controller.applyBrandColors,
+              const SizedBox(width: 8),
+              Expanded(
+                child: _PaletteButton(
+                  label: 'Royal',
+                  primaryHex: '#3457D5',
+                  secondaryHex: '#EEF2FF',
+                  onSelected: controller.applyBrandColors,
+                ),
               ),
             ],
           ),
@@ -2062,6 +2126,11 @@ class _PaletteButton extends StatelessWidget {
 
     return OutlinedButton.icon(
       onPressed: () => onSelected(primaryHex, secondaryHex),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        minimumSize: Size.zero,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
       icon: DecoratedBox(
         decoration: BoxDecoration(
           color: secondary,
@@ -2076,7 +2145,7 @@ class _PaletteButton extends StatelessWidget {
           ),
         ),
       ),
-      label: Text(label),
+      label: FittedBox(fit: BoxFit.scaleDown, child: Text(label, maxLines: 1)),
     );
   }
 }
@@ -2114,26 +2183,22 @@ class _PhaseMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    final columns = width >= 1180
-        ? metrics.length
-        : width >= 760
-        ? 2
-        : 1;
-    return GridView.count(
-      crossAxisCount: columns,
-      crossAxisSpacing: 12,
-      mainAxisSpacing: 12,
-      childAspectRatio: columns == 1 ? 3.8 : 3.1,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    final isCompact = width < 760;
+
+    return Row(
       children: [
-        for (final metric in metrics)
-          MetricTile(
-            label: metric.label,
-            value: metric.value,
-            icon: metric.icon,
-            color: metric.color,
+        for (int i = 0; i < metrics.length; i++) ...[
+          if (i > 0) SizedBox(width: isCompact ? 6 : 12),
+          Expanded(
+            child: MetricTile(
+              label: metrics[i].label,
+              value: metrics[i].value,
+              icon: metrics[i].icon,
+              color: metrics[i].color,
+              compact: isCompact,
+            ),
           ),
+        ],
       ],
     );
   }

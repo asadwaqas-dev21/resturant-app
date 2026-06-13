@@ -10,6 +10,9 @@ import 'package:restaurant_os_ai/src/ui/screens/onboarding_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/orders_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/signin_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/account_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/settings_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/account_info_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/change_password_screen.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/phase_two_screen.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
@@ -28,6 +31,15 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       if (hasLegacyWorkspacePath || hasLegacyWorkspaceHash) {
         return '/workspace';
+      }
+
+      final role = ref.read(userRoleProvider);
+      final isWorkspacePath = uri.path == '/workspace' ||
+          uri.path == '/dashboard' ||
+          uri.path == '/phase2';
+
+      if (isWorkspacePath && role == UserRole.customer) {
+        return '/';
       }
 
       return null;
@@ -49,6 +61,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/brand-setup',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: BrandSetupScreen()),
+      ),
+      GoRoute(
+        path: '/settings',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: SettingsScreen()),
+      ),
+      GoRoute(
+        path: '/account-info',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: AccountInfoScreen()),
+      ),
+      GoRoute(
+        path: '/change-password',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ChangePasswordScreen()),
       ),
       ShellRoute(
         builder: (context, state, child) => AppShell(child: child),

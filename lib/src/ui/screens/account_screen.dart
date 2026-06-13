@@ -6,11 +6,6 @@ import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/domain/models.dart';
 import 'package:restaurant_os_ai/src/state/phase_two_providers.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/insights_panel.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/label_pill.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/section_title.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
-import 'package:restaurant_os_ai/src/ui/widgets/status_pill.dart';
 
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
@@ -18,437 +13,197 @@ class AccountScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(customerProvider);
-    final orders = ref.watch(ordersProvider);
     final restaurant = ref.watch(restaurantProvider);
 
     final primaryColor = colorFromHex(
       restaurant.primaryColorHex,
       fallback: AppColors.primary,
     );
-    final secondaryColor = colorFromHex(
-      restaurant.secondaryColorHex,
-      fallback: AppColors.faint,
-    );
 
-    // Calculate loyalty tier
-    final int points = customer.loyaltyPoints;
-    String tierName = 'Bronze Member';
-    double tierProgress = 0.0;
-    Color tierColor = AppColors.muted;
-    if (points >= 500) {
-      tierName = 'Gold Member';
-      tierProgress = 1.0;
-      tierColor = AppColors.saffron;
-    } else if (points >= 150) {
-      tierName = 'Silver Member';
-      tierProgress = (points - 150) / 350;
-      tierColor = AppColors.blue;
-    } else {
-      tierProgress = points / 150;
-      tierColor = const Color(0XFFA0522D); // Bronze sienna
-    }
+    final userName = customer.fullName.isNotEmpty
+        ? customer.fullName
+        : 'Asad Waqas';
+    final initials = userName.isNotEmpty
+        ? userName
+              .split(' ')
+              .map((e) => e.isNotEmpty ? e[0] : '')
+              .join()
+              .toUpperCase()
+        : 'A';
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 96),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Profile Header section
-          Row(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: primaryColor, width: 2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: primaryColor.withValues(alpha: 0.15),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Logo(
-                  initials: customer.fullName.isNotEmpty
-                      ? customer.fullName
-                            .split(' ')
-                            .map((e) => e.isNotEmpty ? e[0] : '')
-                            .join()
-                            .toUpperCase()
-                      : 'C',
-                  size: 64,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              // Top Profile Header section
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
+                child: Row(
                   children: [
-                    Text(
-                      customer.fullName,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                    const SizedBox(height: 3),
-                    Row(
-                      children: [
-                        Icon(Iconsax.verify5, color: primaryColor, size: 16),
-                        const SizedBox(width: 4),
-                        Text(
-                          tierName,
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: tierColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-
-          // Digital Credit Card Wallet
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor,
-                  primaryColor.withValues(alpha: 0.8),
-                  AppColors.ink.withValues(alpha: 0.85),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(24),
-              boxShadow: [
-                BoxShadow(
-                  color: primaryColor.withValues(alpha: 0.35),
-                  blurRadius: 16,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          restaurant.appName.toUpperCase(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.5,
-                          ),
-                        ),
-                        const Text(
-                          'DIGITAL WALLET',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Icon(Iconsax.wifi, color: Colors.white, size: 22),
-                  ],
-                ),
-                const SizedBox(height: 28),
-                const Text(
-                  'BALANCE',
-                  style: TextStyle(
-                    color: Colors.white60,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                ),
-                Text(
-                  money(customer.walletBalance),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      customer.fullName.toUpperCase(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    const Text(
-                      '•••• 2026',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          // Loyalty Progress Card
-          Surface(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Iconsax.crown, color: tierColor, size: 24),
-                        const SizedBox(width: 10),
-                        Text(
-                          'Loyalty Rewards',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleLarge?.copyWith(fontSize: 20),
-                        ),
-                      ],
-                    ),
+                    // Avatar
                     Container(
+                      width: 56,
+                      height: 56,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFFDECE9), // Soft Peach/Rose
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        initials.isNotEmpty ? initials.substring(0, 1) : 'A',
+                        style: const TextStyle(
+                          color: Color(0xFF2C2C2C),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    // User info Column
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            userName,
+                            style: const TextStyle(
+                              color: Color(0xFF1E1E1E),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: const [
+                              Text('🇰🇼', style: TextStyle(fontSize: 14)),
+                              SizedBox(width: 6),
+                              Text(
+                                'Kuwait',
+                                style: TextStyle(
+                                  color: Color(0xFF7A7A7A),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Settings Gear Icon
+                    IconButton(
+                      icon: const Icon(
+                        Icons.settings_outlined,
+                        color: Color(0xFF1E1E1E),
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        context.go('/settings');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Thick separator band
+              Container(
+                height: 8,
+                color: const Color(0xFFF5F5F5),
+                width: double.infinity,
+              ),
+
+              // List Items section
+              ListView(
+                shrinkWrap: true,
+
+                children: [
+                  _FlatListTile(
+                    icon: Iconsax.gift,
+                    title: 'Rewards',
+                    trailingText: '${customer.loyaltyPoints} points',
+                    onTap: () {
+                      _showLoyaltyInfo(context, customer.loyaltyPoints);
+                    },
+                  ),
+                  _FlatListTile(
+                    icon: Iconsax.receipt_item,
+                    title: 'Your orders',
+                    onTap: () {
+                      context.go('/orders');
+                    },
+                  ),
+                  _FlatListTile(
+                    icon: Iconsax.wallet_3,
+                    title: 'Kurchu pay',
+                    trailingText:
+                        'AED ${customer.walletBalance.toStringAsFixed(3)}',
+                    onTap: () {
+                      _showTopUpDialog(context, ref, primaryColor);
+                    },
+                  ),
+                  _FlatListTile(
+                    icon: Iconsax.ticket,
+                    title: 'Vouchers',
+                    onTap: () {
+                      _showVouchersInfo(context);
+                    },
+                  ),
+                  _FlatListTile(
+                    customIcon: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
+                        horizontal: 4,
+                        vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: tierColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(10),
+                        color: const Color(0xFF8A3DFF),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text(
-                        '${customer.loyaltyPoints} PTS',
+                      child: const Text(
+                        'pro',
                         style: TextStyle(
-                          color: tierColor,
+                          color: Colors.white,
+                          fontSize: 9,
                           fontWeight: FontWeight.bold,
-                          fontSize: 13,
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: LinearProgressIndicator(
-                    value: tierProgress,
-                    minHeight: 8,
-                    backgroundColor: AppColors.border,
-                    valueColor: AlwaysStoppedAnimation<Color>(tierColor),
+                    title: 'Kurchu pro',
+                    onTap: () {
+                      _showProJoinedDialog(context);
+                    },
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      tierName,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: tierColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    if (points < 500)
-                      Text(
-                        '${500 - points} pts to Gold Member',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: AppColors.muted),
-                      )
-                    else
-                      const Text(
-                        'Max Tier unlocked!',
-                        style: TextStyle(
-                          color: AppColors.success,
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Settings Actions List
-          const SectionTitle(title: 'Account Settings'),
-          const SizedBox(height: 12),
-          Surface(
-            padding: EdgeInsets.zero,
-            child: Column(
-              children: [
-                _SettingsTile(
-                  icon: Iconsax.location,
-                  title: 'Delivery Addresses',
-                  subtitle: 'Manage home, work, and saved places',
-                  onTap: () {},
-                ),
-                const Divider(height: 1, indent: 56),
-                _SettingsTile(
-                  icon: Iconsax.translate,
-                  title: 'App Language',
-                  subtitle: restaurant.urduEnabled
-                      ? 'Switch between English / Urdu'
-                      : 'English default',
-                  trailing: restaurant.urduEnabled
-                      ? Consumer(
-                          builder: (context, ref, _) {
-                            final restNotifier = ref.read(
-                              restaurantProvider.notifier,
-                            );
-                            return Switch.adaptive(
-                              value: restaurant.urduEnabled,
-                              activeColor: primaryColor,
-                              onChanged: (_) => restNotifier.toggleUrdu(),
-                            );
-                          },
-                        )
-                      : null,
-                  onTap: () {},
-                ),
-                const Divider(height: 1, indent: 56),
-                _SettingsTile(
-                  icon: Iconsax.logout,
-                  title: 'Logout',
-                  subtitle: 'Sign out or switch accounts',
-                  onTap: () => context.go('/onboarding'),
-                  iconColor: AppColors.danger,
-                  textColor: AppColors.danger,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Recent Activity / Order history preview
-          const SectionTitle(title: 'Recent Orders'),
-          const SizedBox(height: 12),
-          if (orders.isEmpty)
-            const Surface(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
-                  child: Text('No orders placed yet.'),
-                ),
+                  _FlatListTile(
+                    icon: Icons.help_outline_outlined,
+                    title: 'Get help',
+                    onTap: () {
+                      _showHelpDialog(context);
+                    },
+                  ),
+                  _FlatListTile(
+                    icon: Icons.info_outline,
+                    title: 'About app',
+                    onTap: () {
+                      _showAboutDialog(context);
+                    },
+                  ),
+                  // Logout action
+                  _FlatListTile(
+                    icon: Iconsax.logout,
+                    title: 'Logout',
+                    titleColor: AppColors.danger,
+                    iconColor: AppColors.danger,
+                    onTap: () => context.go('/onboarding'),
+                  ),
+                ],
               ),
-            )
-          else
-            for (final order in orders.take(3)) ...[
-              Surface(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: primaryColor.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Icon(
-                                Iconsax.box,
-                                color: primaryColor,
-                                size: 20,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Order #${order.orderNumber}',
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  '${order.lines.length} items • ${money(order.total)}',
-                                  style: Theme.of(context).textTheme.bodySmall
-                                      ?.copyWith(color: AppColors.muted),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        StatusPill(status: order.status),
-                      ],
-                    ),
-                    const Divider(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _formatDate(order.createdAt),
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: AppColors.muted),
-                        ),
-                        TextButton.icon(
-                          onPressed: () {
-                            // Reorder shortcut
-                            final cartNotifier = ref.read(
-                              cartProvider.notifier,
-                            );
-                            cartNotifier.clear();
-                            for (final line in order.lines) {
-                              cartNotifier.add(line.item);
-                            }
-                            context.go('/cart');
-                          },
-                          icon: const Icon(Iconsax.repeat, size: 14),
-                          label: const Text(
-                            'Reorder',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          style: TextButton.styleFrom(
-                            foregroundColor: primaryColor,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 96),
             ],
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -458,16 +213,168 @@ class AccountScreen extends ConsumerWidget {
     ref.read(walletLedgerProvider.notifier).addTopUp(amount);
   }
 
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} mins ago';
-    } else if (difference.inHours < 24) {
-      return '${difference.inHours} hours ago';
-    } else {
-      return '${date.day}/${date.month}/${date.year}';
-    }
+  void _showLoyaltyInfo(BuildContext context, int points) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Rewards Program'),
+        content: Text(
+          'You currently have $points loyalty points. Keep ordering to earn more rewards!',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showVouchersInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Your Vouchers'),
+        content: const Text(
+          'You have no active vouchers at the moment. Check back soon for promotions!',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showProJoinedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('talabat pro'),
+        content: const Text(
+          'Enjoy free delivery and exclusive partner discounts. TOD access details will be sent via SMS.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Awesome'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showHelpDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Support Center'),
+        content: const Text(
+          'Need help with your order? Our support agents are available 24/7. Contact us at support@restaurantos.io.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAboutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('About RestaurantOS'),
+        content: const Text(
+          'RestaurantOS v2.4.0\nPremium White-Label food ordering experience.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTopUpDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Color primaryColor,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Top Up Wallet',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Select an amount to load onto your digital wallet.',
+                style: TextStyle(color: AppColors.muted, fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: _TopUpButton(
+                      amount: 500,
+                      primaryColor: primaryColor,
+                      onPressed: () {
+                        _topUp(ref, 500);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _TopUpButton(
+                      amount: 1000,
+                      primaryColor: primaryColor,
+                      onPressed: () {
+                        _topUp(ref, 1000);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _TopUpButton(
+                      amount: 2500,
+                      primaryColor: primaryColor,
+                      onPressed: () {
+                        _topUp(ref, 2500);
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -500,53 +407,73 @@ class _TopUpButton extends StatelessWidget {
   }
 }
 
-class _SettingsTile extends StatelessWidget {
-  const _SettingsTile({
-    required this.icon,
+class _FlatListTile extends StatelessWidget {
+  const _FlatListTile({
     required this.title,
-    required this.subtitle,
     required this.onTap,
+    this.icon,
+    this.customIcon,
+    this.trailingText,
     this.trailing,
+    this.titleColor,
     this.iconColor,
-    this.textColor,
   });
 
-  final IconData icon;
   final String title;
-  final String subtitle;
   final VoidCallback onTap;
+  final IconData? icon;
+  final Widget? customIcon;
+  final String? trailingText;
   final Widget? trailing;
+  final Color? titleColor;
   final Color? iconColor;
-  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: (iconColor ?? AppColors.ink).withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(10),
+    return Column(
+      children: [
+        ListTile(
+          leading: SizedBox(
+            width: 25,
+            height: 25,
+            child: Center(
+              child:
+                  customIcon ??
+                  Icon(
+                    icon,
+                    color: iconColor ?? const Color(0xFF424242),
+                    size: 18,
+                  ),
+            ),
+          ),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: titleColor ?? const Color(0xFF1E1E1E),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          trailing:
+              trailing ??
+              (trailingText != null
+                  ? Text(
+                      trailingText!,
+                      style: const TextStyle(
+                        color: Color(0xFF7A7A7A),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  : null),
+          onTap: onTap,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 2,
+          ),
         ),
-        child: Icon(icon, color: iconColor ?? AppColors.muted, size: 20),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: textColor ?? AppColors.ink,
-          fontWeight: FontWeight.w600,
-          fontSize: 15,
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: const TextStyle(color: AppColors.muted, fontSize: 12),
-      ),
-      trailing:
-          trailing ??
-          const Icon(Iconsax.arrow_right_3, color: AppColors.muted, size: 16),
-      onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        const Divider(height: 1, color: Color(0xFFF5F5F5), indent: 56),
+      ],
     );
   }
 }

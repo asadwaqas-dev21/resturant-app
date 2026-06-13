@@ -6,7 +6,7 @@ class Surface extends StatelessWidget {
   const Surface({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.all(14),
     this.color = AppColors.surface,
     this.radius = 16,
     this.onTap,
@@ -25,10 +25,7 @@ class Surface extends StatelessWidget {
       side: const BorderSide(color: AppColors.border, width: 0.5),
     );
 
-    Widget content = Padding(
-      padding: padding,
-      child: child,
-    );
+    Widget content = Padding(padding: padding, child: child);
 
     if (onTap != null) {
       content = InkWell(
@@ -46,6 +43,7 @@ class Surface extends StatelessWidget {
     );
   }
 }
+
 final _moneyFormat = NumberFormat.currency(
   locale: 'en_PK',
   symbol: 'PKR ',
@@ -53,4 +51,3 @@ final _moneyFormat = NumberFormat.currency(
 );
 
 String money(num value) => _moneyFormat.format(value);
-

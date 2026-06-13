@@ -17,7 +17,9 @@ class DesktopNav extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final restaurant = ref.watch(restaurantProvider);
     final customer = ref.watch(customerProvider);
-    final cart = ref.watch(cartProvider);
+    ref.watch(cartProvider);
+    final role = ref.watch(userRoleProvider);
+    final isCustomer = role == UserRole.customer;
 
     return Container(
       color: AppColors.surface,
@@ -65,18 +67,20 @@ class DesktopNav extends ConsumerWidget {
             path: '/orders',
             currentPath: currentPath,
           ),
-          _NavItem(
-            label: 'Operations',
-            icon: Iconsax.chart_square,
-            path: '/dashboard',
-            currentPath: currentPath,
-          ),
-          _NavItem(
-            label: 'Ops Hub',
-            icon: Iconsax.cpu_setting,
-            path: '/workspace',
-            currentPath: currentPath,
-          ),
+          if (!isCustomer) ...[
+            _NavItem(
+              label: 'Operations',
+              icon: Iconsax.chart_square,
+              path: '/dashboard',
+              currentPath: currentPath,
+            ),
+            _NavItem(
+              label: 'Ops Hub',
+              icon: Iconsax.cpu_setting,
+              path: '/workspace',
+              currentPath: currentPath,
+            ),
+          ],
           _NavItem(
             label: 'Account',
             icon: Iconsax.user,

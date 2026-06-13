@@ -39,13 +39,12 @@ ThemeData buildAppTheme({
     scaffoldBackgroundColor: faint,
     textTheme: textTheme,
     appBarTheme: AppBarTheme(
+      surfaceTintColor: Colors.transparent,
       backgroundColor: AppColors.surface,
       foregroundColor: AppColors.ink,
       elevation: 0,
       centerTitle: false,
       titleTextStyle: textTheme.titleMedium,
-      
-
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

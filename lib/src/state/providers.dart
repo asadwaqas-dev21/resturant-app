@@ -39,6 +39,21 @@ final cartProvider = NotifierProvider<CartController, CartState>(
   CartController.new,
 );
 
+enum UserRole { customer, admin }
+
+class UserRoleNotifier extends Notifier<UserRole> {
+  @override
+  UserRole build() => UserRole.customer;
+
+  void setRole(UserRole role) {
+    state = role;
+  }
+}
+
+final userRoleProvider = NotifierProvider<UserRoleNotifier, UserRole>(
+  UserRoleNotifier.new,
+);
+
 final customerProvider = NotifierProvider<CustomerController, CustomerProfile>(
   CustomerController.new,
 );
@@ -326,6 +341,17 @@ class CustomerController extends Notifier<CustomerProfile> {
 
   void topUpWallet(double amount) {
     state = state.copyWith(walletBalance: state.walletBalance + amount);
+  }
+
+  void updateProfileName(String fullName) {
+    state = CustomerProfile(
+      userId: state.userId,
+      fullName: fullName,
+      loyaltyPoints: state.loyaltyPoints,
+      walletBalance: state.walletBalance,
+      totalOrders: state.totalOrders,
+      totalSpent: state.totalSpent,
+    );
   }
 }
 

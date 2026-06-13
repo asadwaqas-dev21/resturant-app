@@ -9,30 +9,34 @@ class MetricTile extends StatelessWidget {
     required this.value,
     required this.icon,
     required this.color,
+    this.compact = false,
   });
 
   final String label;
   final String value;
   final IconData icon;
   final Color color;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Surface(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: compact
+          ? const EdgeInsets.symmetric(horizontal: 8, vertical: 6)
+          : const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       child: Row(
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(14),
+              borderRadius: BorderRadius.circular(compact ? 10 : 14),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(11),
-              child: Icon(icon, color: color),
+              padding: EdgeInsets.all(compact ? 6 : 11),
+              child: Icon(icon, color: color, size: compact ? 16 : 24),
             ),
           ),
-          const SizedBox(width: 13),
+          SizedBox(width: compact ? 8 : 13),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -43,16 +47,21 @@ class MetricTile extends StatelessWidget {
                   label,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelMedium?.copyWith(color: AppColors.muted),
+                  style: (compact
+                          ? Theme.of(context).textTheme.labelSmall
+                          : Theme.of(context).textTheme.labelMedium)
+                      ?.copyWith(color: AppColors.muted),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: compact ? 2 : 4),
                 Text(
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: compact
+                      ? Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          )
+                      : Theme.of(context).textTheme.titleMedium,
                 ),
               ],
             ),

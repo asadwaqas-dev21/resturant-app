@@ -140,6 +140,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   child: ElevatedButton.icon(
                     onPressed: () {
                       if (_otpSent) {
+                        ref.read(userRoleProvider.notifier).setRole(
+                              _role == 'customer'
+                                  ? UserRole.customer
+                                  : UserRole.admin,
+                            );
                         context.go(_role == 'customer' ? '/' : '/workspace');
                       } else {
                         setState(() => _otpSent = true);
@@ -153,8 +158,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () =>
-                        context.go(_role == 'customer' ? '/' : '/workspace'),
+                    onPressed: () {
+                      ref.read(userRoleProvider.notifier).setRole(
+                            _role == 'customer'
+                                ? UserRole.customer
+                                : UserRole.admin,
+                          );
+                      context.go(_role == 'customer' ? '/' : '/workspace');
+                    },
                     icon: Icon(
                       _role == 'customer'
                           ? Iconsax.shop

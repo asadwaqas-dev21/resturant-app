@@ -145,8 +145,12 @@ class Logo extends StatelessWidget {
   }
 }
 
-int selectedIndex(String path) {
+int selectedIndex(String path, {bool isCustomer = false}) {
   if (path.startsWith('/orders')) return 1;
+  if (isCustomer) {
+    if (path.startsWith('/account')) return 2;
+    return 0;
+  }
   if (path.startsWith('/dashboard') ||
       path.startsWith('/workspace') ||
       path.startsWith('/phase2')) {
@@ -156,7 +160,18 @@ int selectedIndex(String path) {
   return 0;
 }
 
-String navPath(int index) {
+String navPath(int index, {bool isCustomer = false}) {
+  if (isCustomer) {
+    switch (index) {
+      case 1:
+        return '/orders';
+      case 2:
+        return '/account';
+      case 0:
+      default:
+        return '/';
+    }
+  }
   switch (index) {
     case 1:
       return '/orders';

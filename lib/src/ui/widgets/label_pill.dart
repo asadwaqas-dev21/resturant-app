@@ -31,13 +31,15 @@ class LabelPill extends StatelessWidget {
               Icon(icon, size: 15, color: color),
               const SizedBox(width: 6),
             ],
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.labelMedium?.copyWith(color: color),
+            Flexible(
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: color),
+              ),
             ),
           ],
         ),
