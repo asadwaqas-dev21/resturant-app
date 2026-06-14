@@ -25,7 +25,15 @@ class AppShell extends ConsumerWidget {
         titleSpacing: 16,
         title: Row(
           children: [
-            Logo(initials: restaurant.logoInitials, size: 38),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                'assets/aaplogo.jpeg',
+                width: 38,
+                height: 38,
+                fit: BoxFit.cover,
+              ),
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(

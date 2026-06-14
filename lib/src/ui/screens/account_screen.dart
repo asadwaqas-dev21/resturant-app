@@ -284,6 +284,8 @@ class AccountScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text('Rewards Program'),
         content: Text(
           'You currently have $points loyalty points. Keep ordering to earn more rewards!',
@@ -302,6 +304,8 @@ class AccountScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         title: const Text('Your Vouchers'),
         content: const Text(
           'You have no active vouchers at the moment. Check back soon for promotions!',
@@ -320,7 +324,9 @@ class AccountScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('talabat pro'),
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Text('Kurchu Pro'),
         content: const Text(
           'Enjoy free delivery and exclusive partner discounts. TOD access details will be sent via SMS.',
         ),
