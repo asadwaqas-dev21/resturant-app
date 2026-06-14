@@ -18,7 +18,7 @@ class EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Surface(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 22),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
           children: [
             Icon(icon, color: AppColors.muted, size: 34),
@@ -38,4 +38,3 @@ class EmptyState extends StatelessWidget {
     );
   }
 }
-

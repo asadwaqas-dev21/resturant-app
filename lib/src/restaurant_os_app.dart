@@ -17,6 +17,8 @@ import 'package:restaurant_os_ai/src/ui/screens/change_email_screen.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/ui/screens/chat_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/notifications_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/thank_you_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/checkout_screen.dart';
 import 'package:restaurant_os_ai/src/ui/phase_two_screen.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
@@ -91,6 +93,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: NotificationsScreen()),
+      ),
+      GoRoute(
+        path: '/thank-you',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final number = state.uri.queryParameters['number'];
+          return NoTransitionPage(
+            child: ThankYouScreen(orderNumber: number),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/checkout',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: CheckoutScreen()),
       ),
       GoRoute(
         path: '/account-info',

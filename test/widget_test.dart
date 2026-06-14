@@ -248,4 +248,54 @@ void main() {
     expect(find.text('Notifications'), findsAtLeastNWidgets(1));
     expect(find.text('Special Discount!'), findsOneWidget);
   });
+
+  testWidgets('customer checkout redirects to thank you screen and goes back to menu', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Order food'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview customer app'));
+    await tester.pumpAndSettle();
+
+    // Add first menu item
+    final addButton = find.text('Add').first;
+    await tester.ensureVisible(addButton);
+    await tester.tap(addButton);
+    await tester.pumpAndSettle();
+
+    // Navigate to Cart screen
+    await tester.tap(find.byTooltip('Cart'));
+    await tester.pumpAndSettle();
+
+    // Find and tap Proceed to Checkout button
+    final proceedToCheckoutBtn = find.textContaining('Proceed to Checkout');
+    expect(proceedToCheckoutBtn, findsOneWidget);
+    await tester.ensureVisible(proceedToCheckoutBtn);
+    await tester.tap(proceedToCheckoutBtn);
+    await tester.pumpAndSettle();
+
+    // Verify redirected to Checkout screen and tap Place order button
+    expect(find.text('Checkout'), findsAtLeastNWidgets(1));
+    final placeOrderButton = find.textContaining('Place order');
+    expect(placeOrderButton, findsOneWidget);
+    await tester.ensureVisible(placeOrderButton);
+    await tester.tap(placeOrderButton);
+    await tester.pumpAndSettle();
+
+    // Verify redirected to Thank You screen
+    expect(find.text('Order Placed Successfully!'), findsOneWidget);
+    expect(find.text('Track Order'), findsOneWidget);
+    expect(find.text('Back to Menu'), findsOneWidget);
+
+    // Tap Back to Menu
+    final backToMenuButton = find.text('Back to Menu');
+    await tester.ensureVisible(backToMenuButton);
+    await tester.tap(backToMenuButton);
+    await tester.pumpAndSettle();
+
+    // Verify returned to the customer menu/booking screen
+    expect(find.text('Menu'), findsAtLeastNWidgets(1));
+  });
 }
