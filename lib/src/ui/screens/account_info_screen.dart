@@ -17,7 +17,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
   String _gender = 'Female';
   bool _receiveOffers = false;
   bool _subscribeNewsletter = false;
-  
+
   late TextEditingController _emailController;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -31,7 +31,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     final customer = ref.read(customerProvider);
     final nameParts = customer.fullName.split(' ');
     final firstName = nameParts.isNotEmpty ? nameParts[0] : 'Asad';
-    final lastName = nameParts.length > 1 ? nameParts.sublist(1).join(' ') : 'Waqas';
+    final lastName = nameParts.length > 1
+        ? nameParts.sublist(1).join(' ')
+        : 'Waqas';
     final email = customer.fullName.isNotEmpty
         ? '${customer.fullName.toLowerCase().replaceAll(' ', '')}@gmail.com'
         : 'asadkambo2021@gmail.com';
@@ -73,7 +75,10 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                           height: 44,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                            border: Border.all(
+                              color: const Color(0xFFE0E0E0),
+                              width: 1,
+                            ),
                             color: Colors.white,
                           ),
                           alignment: Alignment.center,
@@ -95,14 +100,17 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       ),
                     ],
                   ),
-                  
+
                   // Edit / Save Action Button
                   GestureDetector(
                     onTap: () {
                       if (_isEditing) {
                         // Save changes to profile name
-                        final newFullName = '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}';
-                        ref.read(customerProvider.notifier).updateProfileName(newFullName);
+                        final newFullName =
+                            '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}';
+                        ref
+                            .read(customerProvider.notifier)
+                            .updateProfileName(newFullName);
                         setState(() {
                           _isEditing = false;
                         });
@@ -120,9 +128,15 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       }
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                        border: Border.all(
+                          color: const Color(0xFFE0E0E0),
+                          width: 1,
+                        ),
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text(
@@ -138,7 +152,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                 ],
               ),
             ),
-            
+
             // Scrollable Form Fields
             Expanded(
               child: SingleChildScrollView(
@@ -153,7 +167,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       enabled: _isEditing,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // First Name
                     _buildEditableField(
                       label: 'First name',
@@ -161,7 +175,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       enabled: _isEditing,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Last Name
                     _buildEditableField(
                       label: 'Last name',
@@ -169,7 +183,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       enabled: _isEditing,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Phone Number
                     _buildEditableField(
                       label: 'Phone number',
@@ -178,7 +192,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       suffixIcon: Iconsax.edit_2,
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Date of birth
                     _buildEditableField(
                       label: 'Date of birth (optional)',
@@ -189,7 +203,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       onTap: _isEditing ? () => _selectDate(context) : null,
                     ),
                     const SizedBox(height: 24),
-                    
+
                     // Gender Section
                     const Text(
                       'Gender (optional)',
@@ -208,7 +222,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       ],
                     ),
                     const SizedBox(height: 28),
-                    
+
                     // Offer Checkboxes
                     _buildCheckboxRow(
                       value: _receiveOffers,
@@ -230,7 +244,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                       },
                     ),
                     const SizedBox(height: 36),
-                    
+
                     // Delete Account Button
                     SizedBox(
                       width: double.infinity,
@@ -238,7 +252,10 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
                         onPressed: () => _confirmDeleteAccount(context),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: const Color(0xFF1E1E1E),
-                          side: const BorderSide(color: Color(0xFF1E1E1E), width: 1.5),
+                          side: const BorderSide(
+                            color: Color(0xFF1E1E1E),
+                            width: 1.5,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28),
                           ),
@@ -287,19 +304,15 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
         hintText: label,
         suffixIcon: suffixIcon != null
             ? (onTap != null
-                ? GestureDetector(
-                    onTap: onTap,
-                    child: Icon(
-                      suffixIcon,
-                      color: const Color(0xFF8E8E8E),
-                      size: 20,
-                    ),
-                  )
-                : Icon(
-                    suffixIcon,
-                    color: const Color(0xFF8E8E8E),
-                    size: 20,
-                  ))
+                  ? GestureDetector(
+                      onTap: onTap,
+                      child: Icon(
+                        suffixIcon,
+                        color: const Color(0xFF8E8E8E),
+                        size: 20,
+                      ),
+                    )
+                  : Icon(suffixIcon, color: const Color(0xFF8E8E8E), size: 20))
             : null,
       ),
     );
@@ -321,7 +334,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: isSelected ? const Color(0xFF1E1E1E) : const Color(0xFFE0E0E0),
+                color: isSelected
+                    ? const Color(0xFF1E1E1E)
+                    : const Color(0xFFE0E0E0),
                 width: 2,
               ),
             ),
@@ -366,7 +381,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
             height: 20,
             decoration: BoxDecoration(
               border: Border.all(
-                color: value ? const Color(0xFF1E1E1E) : const Color(0xFFE0E0E0),
+                color: value
+                    ? const Color(0xFF1E1E1E)
+                    : const Color(0xFFE0E0E0),
                 width: 1.5,
               ),
               borderRadius: BorderRadius.circular(4),
@@ -374,11 +391,7 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
             ),
             alignment: Alignment.center,
             child: value
-                ? const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 14,
-                  )
+                ? const Icon(Icons.check, color: Colors.white, size: 14)
                 : null,
           ),
           const SizedBox(width: 12),
@@ -428,7 +441,9 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Account'),
-        content: const Text('Are you sure you want to permanently delete your account? This action cannot be undone.'),
+        content: const Text(
+          'Are you sure you want to permanently delete your account? This action cannot be undone.',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

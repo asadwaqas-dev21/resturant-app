@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/restaurant_os_app.dart';
 
 void main() {
@@ -124,5 +125,127 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.byTooltip('Add menu item'), findsOneWidget);
+  });
+
+  testWidgets('customer can access chat and send message', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Order food'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview customer app'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Chat'), findsOneWidget);
+    await tester.tap(find.text('Chat'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Live Support Chat'), findsOneWidget);
+    expect(find.text('Online Agents ready'), findsOneWidget);
+
+    await tester.enterText(find.byType(TextField), 'Hello testing message');
+    await tester.tap(find.byIcon(Iconsax.send_1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Hello testing message'), findsOneWidget);
+  });
+
+  testWidgets('owner can access chat and send message in channel', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Owner'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview operations'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Chat'), findsOneWidget);
+    await tester.tap(find.text('Chat'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kitchen Display team'), findsAtLeastNWidgets(1));
+    expect(find.text('Rider team chat'), findsOneWidget);
+
+    await tester.tap(find.text('Rider team chat'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Calling all riders');
+    await tester.tap(find.byIcon(Iconsax.send_1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Calling all riders'), findsOneWidget);
+  });
+
+  testWidgets('staff does not see chat tab', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview operations'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Chat'), findsNothing);
+  });
+
+  testWidgets('tapping notification icon opens notifications screen', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Order food'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview customer app'));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip('Notifications'), findsOneWidget);
+    await tester.tap(find.byTooltip('Notifications'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Notifications'), findsAtLeastNWidgets(1));
+    expect(find.text('Special Discount!'), findsOneWidget);
+
+    await tester.tap(find.text('Mark all read'));
+    await tester.pumpAndSettle();
+
+    await tester.drag(find.text('Special Discount!'), const Offset(-500.0, 0.0));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Special Discount!'), findsNothing);
+
+    await tester.tap(find.byTooltip('Clear all'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('All caught up!'), findsOneWidget);
+  });
+
+  testWidgets('owner on dashboard can tap notification bell icon to open notifications screen', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Owner'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview operations'));
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip('Notifications'), findsOneWidget);
+    await tester.tap(find.byTooltip('Notifications'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Notifications'), findsAtLeastNWidgets(1));
+    expect(find.text('Special Discount!'), findsOneWidget);
   });
 }

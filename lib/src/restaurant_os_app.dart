@@ -15,11 +15,16 @@ import 'package:restaurant_os_ai/src/ui/screens/account_info_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/change_password_screen.dart';
 import 'package:restaurant_os_ai/src/ui/screens/change_email_screen.dart';
 import 'package:restaurant_os_ai/src/state/providers.dart';
+import 'package:restaurant_os_ai/src/ui/screens/chat_screen.dart';
+import 'package:restaurant_os_ai/src/ui/screens/notifications_screen.dart';
 import 'package:restaurant_os_ai/src/ui/phase_two_screen.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/onboarding',
     redirect: (context, state) {
       final uri = state.uri;
@@ -45,6 +50,10 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       if (role == UserRole.staff && uri.path == '/dashboard') {
         return '/workspace';
+      }
+
+      if (role == UserRole.staff && uri.path == '/chat') {
+        return '/orders';
       }
 
       if (role != UserRole.customer && (uri.path == '/' || uri.path == '/cart')) {
@@ -73,8 +82,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/settings',
+        parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: SettingsScreen()),
+      ),
+      GoRoute(
+        path: '/notifications',
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: NotificationsScreen()),
       ),
       GoRoute(
         path: '/account-info',
@@ -119,6 +135,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/cart',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: CartScreen()),
+          ),
+          GoRoute(
+            path: '/chat',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ChatScreen()),
           ),
           GoRoute(
             path: '/account',

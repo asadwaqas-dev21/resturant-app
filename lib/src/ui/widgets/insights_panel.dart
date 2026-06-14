@@ -145,12 +145,23 @@ class Logo extends StatelessWidget {
   }
 }
 
-int selectedIndex(String path, {bool isCustomer = false}) {
-  if (isCustomer) {
+int selectedIndex(String path, UserRole role) {
+  if (role == UserRole.customer) {
     if (path.startsWith('/orders')) return 1;
-    if (path.startsWith('/account')) return 2;
+    if (path.startsWith('/chat')) return 2;
+    if (path.startsWith('/account')) return 3;
+    return 0;
+  } else if (role == UserRole.owner) {
+    if (path.startsWith('/workspace') ||
+        path.startsWith('/phase2') ||
+        path.startsWith('/dashboard')) {
+      return 1;
+    }
+    if (path.startsWith('/chat')) return 2;
+    if (path.startsWith('/account')) return 3;
     return 0;
   } else {
+    // Staff
     if (path.startsWith('/workspace') ||
         path.startsWith('/phase2') ||
         path.startsWith('/dashboard')) {
@@ -161,18 +172,33 @@ int selectedIndex(String path, {bool isCustomer = false}) {
   }
 }
 
-String navPath(int index, {bool isCustomer = false}) {
-  if (isCustomer) {
+String navPath(int index, UserRole role) {
+  if (role == UserRole.customer) {
     switch (index) {
       case 1:
         return '/orders';
       case 2:
+        return '/chat';
+      case 3:
         return '/account';
       case 0:
       default:
         return '/';
     }
+  } else if (role == UserRole.owner) {
+    switch (index) {
+      case 1:
+        return '/workspace';
+      case 2:
+        return '/chat';
+      case 3:
+        return '/account';
+      case 0:
+      default:
+        return '/orders';
+    }
   } else {
+    // Staff
     switch (index) {
       case 1:
         return '/workspace';

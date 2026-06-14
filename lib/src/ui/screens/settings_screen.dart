@@ -56,7 +56,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     style: TextStyle(
                       color: Color(0xFF1E1E1E),
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -273,7 +273,7 @@ class _SettingsItem extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Color(0xFF1E1E1E),
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
             ),
           ),
