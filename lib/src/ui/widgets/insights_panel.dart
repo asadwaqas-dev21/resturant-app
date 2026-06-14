@@ -153,8 +153,7 @@ int selectedIndex(String path, UserRole role) {
     return 0;
   } else if (role == UserRole.owner) {
     if (path.startsWith('/workspace') ||
-        path.startsWith('/phase2') ||
-        path.startsWith('/dashboard')) {
+        path.startsWith('/phase2')) {
       return 1;
     }
     if (path.startsWith('/chat')) return 2;
@@ -167,7 +166,8 @@ int selectedIndex(String path, UserRole role) {
         path.startsWith('/dashboard')) {
       return 1;
     }
-    if (path.startsWith('/account')) return 2;
+    if (path.startsWith('/chat')) return 2;
+    if (path.startsWith('/account')) return 3;
     return 0;
   }
 }
@@ -195,7 +195,7 @@ String navPath(int index, UserRole role) {
         return '/account';
       case 0:
       default:
-        return '/orders';
+        return '/dashboard';
     }
   } else {
     // Staff
@@ -203,10 +203,12 @@ String navPath(int index, UserRole role) {
       case 1:
         return '/workspace';
       case 2:
+        return '/chat';
+      case 3:
         return '/account';
       case 0:
       default:
-        return '/orders';
+        return '/kitchen';
     }
   }
 }

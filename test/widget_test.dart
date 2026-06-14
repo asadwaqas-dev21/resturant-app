@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:restaurant_os_ai/src/restaurant_os_app.dart';
+import 'package:restaurant_os_ai/src/ui/widgets/surface_widget.dart';
 
 void main() {
   testWidgets('renders the RestaurantOS customer menu', (tester) async {
@@ -54,11 +55,15 @@ void main() {
     await tester.tap(find.text('Preview operations'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Kitchen'), findsOneWidget);
+    final kitchenModule = find.descendant(
+      of: find.byType(Surface),
+      matching: find.text('Kitchen'),
+    );
+    expect(kitchenModule, findsOneWidget);
     expect(find.text('Riders'), findsOneWidget);
     expect(find.text('Customers'), findsNothing);
 
-    await tester.tap(find.text('Kitchen'));
+    await tester.tap(kitchenModule);
     await tester.pumpAndSettle();
 
     expect(find.text('Kitchen display'), findsOneWidget);
@@ -181,7 +186,7 @@ void main() {
     expect(find.text('Calling all riders'), findsOneWidget);
   });
 
-  testWidgets('staff does not see chat tab', (tester) async {
+  testWidgets('staff can access chat and send message in channel', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
     await tester.pumpAndSettle();
 
@@ -194,7 +199,21 @@ void main() {
     await tester.tap(find.text('Preview operations'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Chat'), findsNothing);
+    expect(find.text('Chat'), findsOneWidget);
+    await tester.tap(find.text('Chat'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kitchen Display team'), findsAtLeastNWidgets(1));
+    expect(find.text('Rider team chat'), findsOneWidget);
+
+    await tester.tap(find.text('Rider team chat'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Staff checking in');
+    await tester.tap(find.byIcon(Iconsax.send_1));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Staff checking in'), findsOneWidget);
   });
 
   testWidgets('tapping notification icon opens notifications screen', (tester) async {

@@ -95,13 +95,19 @@ class AppShell extends ConsumerWidget {
         destinations: [
           if (role == UserRole.customer)
             const NavigationDestination(icon: Icon(Iconsax.shop), label: 'Menu'),
-          const NavigationDestination(
-            icon: Icon(Iconsax.receipt_text),
-            label: 'Orders',
+          NavigationDestination(
+            icon: Icon(
+              role == UserRole.owner
+                  ? Iconsax.status_up
+                  : (role == UserRole.staff ? Iconsax.monitor : Iconsax.receipt_text),
+            ),
+            label: role == UserRole.owner
+                ? 'Insights'
+                : (role == UserRole.staff ? 'Kitchen' : 'Orders'),
           ),
           if (role != UserRole.customer)
             const NavigationDestination(icon: Icon(Iconsax.cpu_setting), label: 'Ops'),
-          if (role == UserRole.customer || role == UserRole.owner)
+          if (role == UserRole.customer || role == UserRole.owner || role == UserRole.staff)
             const NavigationDestination(
               icon: Icon(Iconsax.message),
               label: 'Chat',

@@ -54,11 +54,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         return '/workspace';
       }
 
-      if (role == UserRole.staff && uri.path == '/chat') {
-        return '/orders';
-      }
-
       if (role != UserRole.customer && (uri.path == '/' || uri.path == '/cart')) {
+        if (role == UserRole.owner) return '/dashboard';
+        if (role == UserRole.staff) return '/kitchen';
         return '/orders';
       }
 
@@ -137,6 +135,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/orders',
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: OrdersScreen()),
+          ),
+          GoRoute(
+            path: '/kitchen',
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: KitchenDisplayTab()),
           ),
           GoRoute(
             path: '/dashboard',

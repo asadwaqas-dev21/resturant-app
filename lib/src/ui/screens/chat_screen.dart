@@ -198,7 +198,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       } else {
         _ownerChannels[_selectedChannelIndex].messages.add(
           ChatMessage(
-            sender: 'You (Owner)',
+            sender: role == UserRole.owner ? 'You (Owner)' : 'You (Staff)',
             text: text,
             time: DateTime.now(),
             isMe: true,
