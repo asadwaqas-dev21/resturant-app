@@ -498,7 +498,7 @@ class Coupon {
     }
     if (subtotal < minOrderAmount) {
       return CouponValidation.invalid(
-        'Minimum order is PKR ${minOrderAmount.toStringAsFixed(0)}',
+        'Minimum order is AED ${minOrderAmount.toStringAsFixed(0)}',
       );
     }
     final rawDiscount = discountType == DiscountType.percentage

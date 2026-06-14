@@ -22,7 +22,7 @@ class MenuFilterSheet extends ConsumerWidget {
       top: false,
       child: Container(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height * 0.78,
+          maxHeight: MediaQuery.sizeOf(context).height * 0.70,
         ),
         decoration: const BoxDecoration(
           color: AppColors.faint,
@@ -234,13 +234,16 @@ class _FilterSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Surface(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: 10),
-          child,
-        ],
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 10),
+            child,
+          ],
+        ),
       ),
     );
   }
@@ -260,6 +263,3 @@ int activeFilterCount(MenuFilters filters) {
   if (filters.sortBy != SortOption.recommended) count++;
   return count;
 }
-
-
-

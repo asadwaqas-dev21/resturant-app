@@ -35,7 +35,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final availableOrderTypes = restaurant.availableOrderTypes;
     final availablePaymentMethods = restaurant.availablePaymentMethods;
     final serviceAvailable = restaurant.isOrderTypeAvailable(cart.orderType);
-    final paymentAvailable = restaurant.isPaymentMethodAvailable(cart.paymentMethod);
+    final paymentAvailable = restaurant.isPaymentMethodAvailable(
+      cart.paymentMethod,
+    );
     final canPayWithWallet = customer.walletBalance >= totals.total;
 
     final checkoutEnabled =
@@ -53,7 +55,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     return Scaffold(
       backgroundColor: AppColors.faint,
       appBar: AppBar(
-        title: const Text('Checkout'),
+        title: const Text(
+          'Checkout',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Iconsax.arrow_left),
@@ -88,19 +93,22 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   labelFor: (value) => value.label,
                   iconFor: (value) => value.icon,
                 ),
-                if (cart.paymentMethod == PaymentMethod.wallet && !canPayWithWallet) ...[
+                if (cart.paymentMethod == PaymentMethod.wallet &&
+                    !canPayWithWallet) ...[
                   const SizedBox(height: 8),
                   Text(
                     'Wallet balance is ${money(customer.walletBalance)}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: AppColors.danger),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.danger),
                   ),
                 ],
                 if (restaurant.couponsEnabled) ...[
                   const SizedBox(height: 16),
-                  Text('Coupon Discount', style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    'Coupon Discount',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -133,15 +141,17 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(height: 6),
                   Text(
                     totals.couponMessage!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: AppColors.danger),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: AppColors.danger),
                   ),
                 ],
                 if (restaurant.loyaltyEnabled) ...[
                   const SizedBox(height: 16),
-                  Text('Redeem Points', style: Theme.of(context).textTheme.labelLarge),
+                  Text(
+                    'Redeem Points',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
                   const SizedBox(height: 8),
                   Surface(
                     color: AppColors.surfaceAlt,
@@ -168,7 +178,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                 ],
                 const SizedBox(height: 16),
-                Text('Instructions', style: Theme.of(context).textTheme.labelLarge),
+                Text(
+                  'Instructions',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
                 const SizedBox(height: 8),
                 TextField(
                   minLines: 2,
@@ -185,7 +198,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: checkoutEnabled ? () => _checkout(context) : null,
+                    onPressed: checkoutEnabled
+                        ? () => _checkout(context)
+                        : null,
                     icon: const Icon(Iconsax.receipt_add),
                     label: Text('Place order • ${money(totals.total)}'),
                   ),

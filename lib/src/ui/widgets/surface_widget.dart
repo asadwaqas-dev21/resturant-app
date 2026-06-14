@@ -45,9 +45,9 @@ class Surface extends StatelessWidget {
 }
 
 final _moneyFormat = NumberFormat.currency(
-  locale: 'en_PK',
-  symbol: 'PKR ',
-  decimalDigits: 0,
+  locale: 'en_AE',
+  symbol: 'AED ',
+  decimalDigits: 2,
 );
 
 String money(num value) => _moneyFormat.format(value);

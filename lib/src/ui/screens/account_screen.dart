@@ -48,8 +48,8 @@ class AccountScreen extends ConsumerWidget {
                   children: [
                     // Avatar
                     Container(
-                      width: 56,
-                      height: 56,
+                      width: 50,
+                      height: 50,
                       decoration: const BoxDecoration(
                         color: Color(0xFFFDECE9), // Soft Peach/Rose
                         shape: BoxShape.circle,
@@ -60,7 +60,7 @@ class AccountScreen extends ConsumerWidget {
                         style: const TextStyle(
                           color: Color(0xFF2C2C2C),
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -75,19 +75,21 @@ class AccountScreen extends ConsumerWidget {
                             style: const TextStyle(
                               color: Color(0xFF1E1E1E),
                               fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Row(
                             children: [
                               Text(
-                                isCustomer ? '🇰🇼' : '🏢',
+                                isCustomer ? '🇦🇪' : '🏢',
                                 style: const TextStyle(fontSize: 14),
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                isCustomer ? 'Kuwait' : restaurant.branchName,
+                                isCustomer
+                                    ? 'United Arab Emirates'
+                                    : restaurant.branchName,
                                 style: const TextStyle(
                                   color: Color(0xFF7A7A7A),
                                   fontSize: 13,
@@ -104,7 +106,7 @@ class AccountScreen extends ConsumerWidget {
                       icon: const Icon(
                         Icons.settings_outlined,
                         color: Color(0xFF1E1E1E),
-                        size: 24,
+                        size: 22,
                       ),
                       onPressed: () {
                         context.go('/settings');
