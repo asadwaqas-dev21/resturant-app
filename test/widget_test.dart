@@ -130,6 +130,20 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.byTooltip('Add menu item'), findsOneWidget);
+    await tester.tap(find.byTooltip('Add menu item'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Add Menu Item'), findsOneWidget);
+    
+    // Find form fields and enter data
+    await tester.enterText(find.widgetWithText(TextFormField, 'Item name'), 'Test Food Item');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Price (AED)'), '25.00');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Image URL (optional)'), 'https://images.unsplash.com/test-image-url');
+    await tester.tap(find.text('Add'));
+    await tester.pumpAndSettle();
+
+    // Verify it is added to the menu list
+    expect(find.text('Test Food Item'), findsOneWidget);
   });
 
   testWidgets('customer can access chat and send message', (tester) async {

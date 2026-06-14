@@ -20,10 +20,12 @@ class AppShell extends ConsumerWidget {
     final isCustomer = role == UserRole.customer;
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 66,
-        titleSpacing: 16,
-        title: Row(
+      appBar: (path == '/chat' || path == '/account')
+          ? null
+          : AppBar(
+              toolbarHeight: 66,
+              titleSpacing: 16,
+              title: Row(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),

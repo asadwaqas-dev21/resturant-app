@@ -36,87 +36,87 @@ class AccountScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            const SizedBox(width: 16),
+            Container(
+              width: 38,
+              height: 38,
+              decoration: const BoxDecoration(
+                color: Color(0xFFFDECE9),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                initials.isNotEmpty ? initials.substring(0, 1) : 'A',
+                style: const TextStyle(
+                  color: Color(0xFF2C2C2C),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  userName,
+                  style: const TextStyle(
+                    color: Color(0xFF1E1E1E),
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text(
+                      isCustomer ? '🇦🇪' : '🏢',
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      isCustomer
+                          ? 'United Arab Emirates'
+                          : restaurant.branchName,
+                      style: const TextStyle(
+                        color: Color(0xFF7A7A7A),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.settings_outlined,
+              color: Color(0xFF1E1E1E),
+              size: 22,
+            ),
+            onPressed: () {
+              context.go('/settings');
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
+        elevation: 0.5,
+        backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF1E1E1E),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top Profile Header section
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
-                child: Row(
-                  children: [
-                    // Avatar
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFDECE9), // Soft Peach/Rose
-                        shape: BoxShape.circle,
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        initials.isNotEmpty ? initials.substring(0, 1) : 'A',
-                        style: const TextStyle(
-                          color: Color(0xFF2C2C2C),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    // User info Column
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userName,
-                            style: const TextStyle(
-                              color: Color(0xFF1E1E1E),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Text(
-                                isCustomer ? '🇦🇪' : '🏢',
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                isCustomer
-                                    ? 'United Arab Emirates'
-                                    : restaurant.branchName,
-                                style: const TextStyle(
-                                  color: Color(0xFF7A7A7A),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Settings Gear Icon
-                    IconButton(
-                      icon: const Icon(
-                        Icons.settings_outlined,
-                        color: Color(0xFF1E1E1E),
-                        size: 22,
-                      ),
-                      onPressed: () {
-                        context.go('/settings');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-
               // Thick separator band
               Container(
                 height: 8,

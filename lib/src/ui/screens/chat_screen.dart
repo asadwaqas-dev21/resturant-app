@@ -47,7 +47,7 @@ class ChatScreen extends ConsumerStatefulWidget {
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
+
   // Active channel index for Owner
   int _selectedChannelIndex = 0;
 
@@ -61,13 +61,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     ),
     ChatMessage(
       sender: 'You',
-      text: 'Hi, I wanted to ask if I can change the spice level of the Smash Burger I just ordered.',
+      text:
+          'Hi, I wanted to ask if I can change the spice level of the Smash Burger I just ordered.',
       time: DateTime.now().subtract(const Duration(minutes: 7)),
       isMe: true,
     ),
     ChatMessage(
       sender: 'Support',
-      text: 'Sure! I will notify the kitchen display team immediately to make it extra spicy for you.',
+      text:
+          'Sure! I will notify the kitchen display team immediately to make it extra spicy for you.',
       time: DateTime.now().subtract(const Duration(minutes: 5)),
       isMe: false,
     ),
@@ -123,7 +125,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         messages: [
           ChatMessage(
             sender: 'Hamza R. (Rider)',
-            text: 'I have picked up order #1085 and headed to the customer location.',
+            text:
+                'I have picked up order #1085 and headed to the customer location.',
             time: now.subtract(const Duration(minutes: 25)),
             isMe: false,
           ),
@@ -208,7 +211,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
 
     _messageController.clear();
-    
+
     // Scroll to bottom
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -221,16 +224,138 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
+  PreferredSizeWidget _buildAppBar(
+    Color themeColor,
+    UserRole role,
+    bool isCustomer,
+    double screenWidth,
+  ) {
+    if (isCustomer) {
+      return AppBar(
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            const SizedBox(width: 16),
+            CircleAvatar(
+              backgroundColor: themeColor.withValues(alpha: 0.1),
+              radius: 18,
+              child: Icon(
+                Iconsax.message_favorite,
+                color: themeColor,
+                size: 18,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Live Support Chat',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E1E1E),
+                  ),
+                ),
+                SizedBox(height: 2),
+                Row(
+                  children: [
+                    Icon(Icons.circle, color: Color(0xFF4CAF50), size: 6),
+                    SizedBox(width: 4),
+                    Text(
+                      'Online Agents ready',
+                      style: TextStyle(fontSize: 10, color: Color(0xFF7A7A7A)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+        elevation: 0.5,
+        backgroundColor: Colors.white,
+        foregroundColor: const Color(0xFF1E1E1E),
+      );
+    } else {
+      final channel = _ownerChannels[_selectedChannelIndex];
+      final showSplitScreen = screenWidth >= 700;
+
+      if (showSplitScreen) {
+        return AppBar(
+          titleSpacing: 0,
+          title: Row(
+            children: [
+              const SizedBox(width: 16),
+              const SizedBox(
+                width: 264,
+                child: Text(
+                  'Internal Chats',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1E1E1E),
+                  ),
+                ),
+              ),
+              Container(width: 0.5, height: 24, color: AppColors.border),
+              const SizedBox(width: 16),
+              Icon(channel.icon, color: themeColor, size: 20),
+              const SizedBox(width: 10),
+              Text(
+                channel.name,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E1E1E),
+                ),
+              ),
+            ],
+          ),
+          elevation: 0.5,
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFF1E1E1E),
+        );
+      } else {
+        return AppBar(
+          titleSpacing: 0,
+          title: Row(
+            children: [
+              const SizedBox(width: 16),
+              Icon(channel.icon, color: themeColor, size: 20),
+              const SizedBox(width: 10),
+              Text(
+                channel.name,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E1E1E),
+                ),
+              ),
+            ],
+          ),
+          elevation: 0.5,
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFF1E1E1E),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final role = ref.watch(userRoleProvider);
     final isCustomer = role == UserRole.customer;
     final primaryColor = ref.watch(restaurantProvider).primaryColorHex;
-    final themeColor = colorFromHex(primaryColor, fallback: AppColors.primary);
+    final themeColor = colorFromHex(
+      primaryColor,
+      fallback: AppColors.primary.withOpacity(0.1),
+    );
     final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
+      appBar: _buildAppBar(themeColor, role, isCustomer, width),
       body: SafeArea(
         child: isCustomer
             ? _buildCustomerChatView(themeColor)
@@ -243,56 +368,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget _buildCustomerChatView(Color themeColor) {
     return Column(
       children: [
-        // Header
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x08000000),
-                blurRadius: 10,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: themeColor.withValues(alpha: 0.1),
-                radius: 20,
-                child: Icon(Iconsax.message_favorite, color: themeColor, size: 20),
-              ),
-              const SizedBox(width: 12),
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Live Support Chat',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E1E),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.circle, color: Color(0xFF4CAF50), size: 8),
-                        SizedBox(width: 4),
-                        Text(
-                          'Online Agents ready',
-                          style: TextStyle(fontSize: 11, color: Color(0xFF7A7A7A)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        
         // Messages
         Expanded(
           child: ListView.builder(
@@ -305,7 +380,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             },
           ),
         ),
-        
+
         // Input Area
         _buildInputArea(themeColor),
       ],
@@ -327,17 +402,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(16, 20, 16, 12),
-                    child: Text(
-                      'Internal Chats',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF1E1E1E),
-                      ),
-                    ),
-                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: _ownerChannels.length,
@@ -350,14 +414,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ),
-          
+
           // Divider line
           Container(width: 0.5, color: AppColors.border),
-          
+
           // Conversation Panel
-          Expanded(
-            child: _buildConversationPanel(themeColor),
-          ),
+          Expanded(child: _buildConversationPanel(themeColor)),
         ],
       );
     } else {
@@ -384,7 +446,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.white : const Color(0xFF7A7A7A),
+                        color: isSelected
+                            ? Colors.white
+                            : const Color(0xFF7A7A7A),
                       ),
                     ),
                     selected: isSelected,
@@ -403,9 +467,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               },
             ),
           ),
-          Expanded(
-            child: _buildConversationPanel(themeColor),
-          ),
+          Expanded(child: _buildConversationPanel(themeColor)),
         ],
       );
     }
@@ -416,7 +478,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final isSelected = index == _selectedChannelIndex;
 
     return Material(
-      color: isSelected ? themeColor.withValues(alpha: 0.08) : Colors.transparent,
+      color: isSelected
+          ? themeColor.withValues(alpha: 0.08)
+          : Colors.transparent,
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isSelected ? themeColor : const Color(0xFFF5F5F5),
@@ -455,28 +519,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     return Column(
       children: [
-        // Conversation Header
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          color: Colors.white,
-          child: Row(
-            children: [
-              Icon(channel.icon, color: themeColor, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  channel.name,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1E1E1E),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        
         // Messages list
         Expanded(
           child: ListView.builder(
@@ -489,7 +531,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             },
           ),
         ),
-        
+
         // Input
         _buildInputArea(themeColor),
       ],
@@ -497,10 +539,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Widget _buildMessageBubble(ChatMessage msg, Color themeColor) {
-    final bubbleColor = msg.isMe ? themeColor : Colors.white;
-    final textColor = msg.isMe ? Colors.white : const Color(0xFF1E1E1E);
+    final isMe = msg.isMe;
+    final bubbleColor = isMe
+        ? themeColor.withOpacity(0.12)
+        : const Color(0xFFF1F1F1);
+    final textColor = isMe ? themeColor : const Color(0xFF1E1E1E);
     final align = msg.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
-    final timeStr = '${msg.time.hour.toString().padLeft(2, '0')}:${msg.time.minute.toString().padLeft(2, '0')}';
+    final timeStr =
+        '${msg.time.hour.toString().padLeft(2, '0')}:${msg.time.minute.toString().padLeft(2, '0')}';
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -512,7 +558,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               padding: const EdgeInsets.only(left: 4.0, bottom: 2.0),
               child: Text(
                 msg.sender,
-                style: const TextStyle(fontSize: 10, color: Color(0xFF7A7A7A), fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Color(0xFF7A7A7A),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           Container(
@@ -543,7 +593,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             padding: const EdgeInsets.only(top: 2.0, left: 4.0, right: 4.0),
             child: Text(
               timeStr,
-              style: const TextStyle(fontSize: 9, color: Color(0xFFB0B0B0)),
+              style: const TextStyle(fontSize: 9, color: Color(0xFFCCCCCC)),
             ),
           ),
         ],

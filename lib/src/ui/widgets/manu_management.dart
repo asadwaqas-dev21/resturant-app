@@ -89,6 +89,7 @@ class _AddMenuItemDialogState extends State<_AddMenuItemDialog> {
   final _descriptionController = TextEditingController();
   final _prepTimeController = TextEditingController(text: '12');
   final _caloriesController = TextEditingController();
+  final _imageUrlController = TextEditingController();
   String _selectedCategory = 'burgers';
 
   @override
@@ -98,6 +99,7 @@ class _AddMenuItemDialogState extends State<_AddMenuItemDialog> {
     _descriptionController.dispose();
     _prepTimeController.dispose();
     _caloriesController.dispose();
+    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -213,6 +215,15 @@ class _AddMenuItemDialogState extends State<_AddMenuItemDialog> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 14),
+                TextFormField(
+                  controller: _imageUrlController,
+                  keyboardType: TextInputType.url,
+                  decoration: const InputDecoration(
+                    labelText: 'Image URL (optional)',
+                    hintText: 'e.g. https://images.unsplash.com/...',
+                  ),
+                ),
               ],
             ),
           ),
@@ -236,8 +247,9 @@ class _AddMenuItemDialogState extends State<_AddMenuItemDialog> {
                     basePrice: double.parse(_priceController.text.trim()),
                     preparationTimeMin:
                         int.tryParse(_prepTimeController.text.trim()) ?? 12,
-                    imageUrl:
-                        'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80',
+                    imageUrl: _imageUrlController.text.trim().isNotEmpty
+                        ? _imageUrlController.text.trim()
+                        : 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80',
                     totalOrders: 0,
                     averageRating: 5.0,
                     calories: int.tryParse(_caloriesController.text.trim()),

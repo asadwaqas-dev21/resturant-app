@@ -26,14 +26,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           children: [
             // Custom Header with circular back button
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 5),
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () => context.go('/account'),
                     child: Container(
-                      width: 44,
-                      height: 44,
+                      width: 35,
+                      height: 35,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -46,7 +46,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       child: const Icon(
                         Icons.arrow_back,
                         color: Color(0xFF1E1E1E),
-                        size: 20,
+                        size: 18,
                       ),
                     ),
                   ),
@@ -55,14 +55,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     'Settings',
                     style: TextStyle(
                       color: Color(0xFF1E1E1E),
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
 
             // Settings List items
             Expanded(
