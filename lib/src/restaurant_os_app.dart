@@ -43,6 +43,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         return '/';
       }
 
+      if (role == UserRole.staff && uri.path == '/dashboard') {
+        return '/workspace';
+      }
+
+      if (role != UserRole.customer && (uri.path == '/' || uri.path == '/cart')) {
+        return '/orders';
+      }
+
       return null;
     },
     routes: [

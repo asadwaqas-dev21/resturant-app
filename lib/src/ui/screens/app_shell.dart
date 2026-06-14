@@ -58,7 +58,7 @@ class AppShell extends ConsumerWidget {
             onPressed: () => _showNotificationsBottomSheet(context),
             icon: const Icon(Iconsax.notification),
           ),
-          if (path != '/cart')
+          if (isCustomer && path != '/cart')
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: Badge.count(
@@ -75,21 +75,31 @@ class AppShell extends ConsumerWidget {
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 560),
+          constraints: BoxConstraints(
+            maxWidth: isCustomer ? 560 : double.infinity,
+          ),
           child: child,
         ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex(path, isCustomer: isCustomer),
-        onDestinationSelected: (index) => context.go(navPath(index, isCustomer: isCustomer)),
+        onDestinationSelected: (index) =>
+            context.go(navPath(index, isCustomer: isCustomer)),
         destinations: [
-          const NavigationDestination(icon: Icon(Iconsax.shop), label: 'Menu'),
+          if (isCustomer)
+            const NavigationDestination(
+              icon: Icon(Iconsax.shop),
+              label: 'Menu',
+            ),
           const NavigationDestination(
             icon: Icon(Iconsax.receipt_text),
             label: 'Orders',
           ),
           if (!isCustomer)
-            const NavigationDestination(icon: Icon(Iconsax.cpu_setting), label: 'Ops'),
+            const NavigationDestination(
+              icon: Icon(Iconsax.cpu_setting),
+              label: 'Ops',
+            ),
           const NavigationDestination(
             icon: Icon(Iconsax.user),
             label: 'Account',
@@ -135,14 +145,16 @@ class AppShell extends ConsumerWidget {
                 const _NotificationTile(
                   icon: Iconsax.discount_shape,
                   title: 'Special Discount!',
-                  body: 'Get 20% off on your next order. Use coupon code WELCOME20.',
+                  body:
+                      'Get 20% off on your next order. Use coupon code WELCOME20.',
                   time: '5 mins ago',
                 ),
                 const Divider(height: 24, color: Color(0xFFF5F5F5)),
                 const _NotificationTile(
                   icon: Iconsax.shop,
                   title: 'New Branch Open!',
-                  body: 'We are now serving at Gulshan. Order now for fast delivery!',
+                  body:
+                      'We are now serving at Gulshan. Order now for fast delivery!',
                   time: '2 hours ago',
                 ),
                 const SizedBox(height: 16),
@@ -206,10 +218,7 @@ class _NotificationTile extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 time,
-                style: const TextStyle(
-                  color: Color(0xFFB0B0B0),
-                  fontSize: 11,
-                ),
+                style: const TextStyle(color: Color(0xFFB0B0B0), fontSize: 11),
               ),
             ],
           ),

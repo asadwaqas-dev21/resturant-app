@@ -6,6 +6,8 @@ import 'package:restaurant_os_ai/src/state/providers.dart';
 import 'package:restaurant_os_ai/src/state/phase_two_providers.dart';
 import 'package:restaurant_os_ai/src/ui/app_colors.dart';
 
+import 'package:restaurant_os_ai/src/ui/widgets/manu_management.dart';
+
 class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
 
@@ -13,6 +15,8 @@ class AccountScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final customer = ref.watch(customerProvider);
     final restaurant = ref.watch(restaurantProvider);
+    final role = ref.watch(userRoleProvider);
+    final isCustomer = role == UserRole.customer;
 
     final primaryColor = colorFromHex(
       restaurant.primaryColorHex,
@@ -76,12 +80,15 @@ class AccountScreen extends ConsumerWidget {
                           ),
                           const SizedBox(height: 4),
                           Row(
-                            children: const [
-                              Text('🇰🇼', style: TextStyle(fontSize: 14)),
-                              SizedBox(width: 6),
+                            children: [
                               Text(
-                                'Kuwait',
-                                style: TextStyle(
+                                isCustomer ? '🇰🇼' : '🏢',
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                isCustomer ? 'Kuwait' : restaurant.branchName,
+                                style: const TextStyle(
                                   color: Color(0xFF7A7A7A),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
@@ -118,86 +125,145 @@ class AccountScreen extends ConsumerWidget {
               // List Items section
               ListView(
                 shrinkWrap: true,
-
-                children: [
-                  _FlatListTile(
-                    icon: Iconsax.gift,
-                    title: 'Rewards',
-                    trailingText: '${customer.loyaltyPoints} points',
-                    onTap: () {
-                      _showLoyaltyInfo(context, customer.loyaltyPoints);
-                    },
-                  ),
-                  _FlatListTile(
-                    icon: Iconsax.receipt_item,
-                    title: 'Your orders',
-                    onTap: () {
-                      context.go('/orders');
-                    },
-                  ),
-                  _FlatListTile(
-                    icon: Iconsax.wallet_3,
-                    title: 'Kurchu pay',
-                    trailingText:
-                        'AED ${customer.walletBalance.toStringAsFixed(3)}',
-                    onTap: () {
-                      _showTopUpDialog(context, ref, primaryColor);
-                    },
-                  ),
-                  _FlatListTile(
-                    icon: Iconsax.ticket,
-                    title: 'Vouchers',
-                    onTap: () {
-                      _showVouchersInfo(context);
-                    },
-                  ),
-                  _FlatListTile(
-                    customIcon: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF8A3DFF),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: const Text(
-                        'pro',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+                physics: const NeverScrollableScrollPhysics(),
+                children: isCustomer
+                    ? [
+                        _FlatListTile(
+                          icon: Iconsax.gift,
+                          title: 'Rewards',
+                          trailingText: '${customer.loyaltyPoints} points',
+                          onTap: () {
+                            _showLoyaltyInfo(context, customer.loyaltyPoints);
+                          },
                         ),
-                      ),
-                    ),
-                    title: 'Kurchu pro',
-                    onTap: () {
-                      _showProJoinedDialog(context);
-                    },
-                  ),
-                  _FlatListTile(
-                    icon: Icons.help_outline_outlined,
-                    title: 'Get help',
-                    onTap: () {
-                      _showHelpDialog(context);
-                    },
-                  ),
-                  _FlatListTile(
-                    icon: Icons.info_outline,
-                    title: 'About app',
-                    onTap: () {
-                      _showAboutDialog(context);
-                    },
-                  ),
-                  // Logout action
-                  _FlatListTile(
-                    icon: Iconsax.logout,
-                    title: 'Logout',
-                    titleColor: AppColors.danger,
-                    iconColor: AppColors.danger,
-                    onTap: () => context.go('/onboarding'),
-                  ),
-                ],
+                        _FlatListTile(
+                          icon: Iconsax.receipt_item,
+                          title: 'Your orders',
+                          onTap: () {
+                            context.go('/orders');
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Iconsax.wallet_3,
+                          title: 'Kurchu pay',
+                          trailingText:
+                              'AED ${customer.walletBalance.toStringAsFixed(3)}',
+                          onTap: () {
+                            _showTopUpDialog(context, ref, primaryColor);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Iconsax.ticket,
+                          title: 'Vouchers',
+                          onTap: () {
+                            _showVouchersInfo(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          customIcon: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF8A3DFF),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const Text(
+                              'pro',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          title: 'Kurchu pro',
+                          onTap: () {
+                            _showProJoinedDialog(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Icons.help_outline_outlined,
+                          title: 'Get help',
+                          onTap: () {
+                            _showHelpDialog(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Icons.info_outline,
+                          title: 'About app',
+                          onTap: () {
+                            _showAboutDialog(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Iconsax.logout,
+                          title: 'Logout',
+                          titleColor: AppColors.danger,
+                          iconColor: AppColors.danger,
+                          onTap: () => context.go('/onboarding'),
+                        ),
+                      ]
+                    : [
+                        _FlatListTile(
+                          icon: Iconsax.shop,
+                          title: 'Brand setup',
+                          onTap: () {
+                            context.go('/brand-setup');
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Iconsax.cpu_setting,
+                          title: 'Operations hub',
+                          onTap: () {
+                            context.go('/workspace');
+                          },
+                        ),
+                        if (role == UserRole.owner)
+                          _FlatListTile(
+                            icon: Iconsax.status_up,
+                            title: 'Analytics dashboard',
+                            onTap: () {
+                              context.go('/dashboard');
+                            },
+                          ),
+                        _FlatListTile(
+                          icon: Iconsax.menu_board,
+                          title: 'Menu control',
+                          onTap: () {
+                            _showMenuControlBottomSheet(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Icons.settings_outlined,
+                          title: 'System settings',
+                          onTap: () {
+                            context.go('/settings');
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Icons.help_outline_outlined,
+                          title: 'Get support',
+                          onTap: () {
+                            _showHelpDialog(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Icons.info_outline,
+                          title: 'About RestaurantOS',
+                          onTap: () {
+                            _showAboutDialog(context);
+                          },
+                        ),
+                        _FlatListTile(
+                          icon: Iconsax.logout,
+                          title: 'Logout',
+                          titleColor: AppColors.danger,
+                          iconColor: AppColors.danger,
+                          onTap: () => context.go('/onboarding'),
+                        ),
+                      ],
               ),
               const SizedBox(height: 96),
             ],
@@ -270,6 +336,7 @@ class AccountScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text('Support Center'),
         content: const Text(
           'Need help with your order? Our support agents are available 24/7. Contact us at support@restaurantos.io.',
@@ -288,9 +355,10 @@ class AccountScreen extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
         title: const Text('About RestaurantOS'),
         content: const Text(
-          'RestaurantOS v2.4.0\nPremium White-Label food ordering experience.',
+          'RestaurantOS v1.0.0\nPremium White-Label food ordering experience.',
         ),
         actions: [
           TextButton(
@@ -371,6 +439,39 @@ class AccountScreen extends ConsumerWidget {
               const SizedBox(height: 24),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _showMenuControlBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.85,
+          minChildSize: 0.5,
+          maxChildSize: 0.95,
+          expand: false,
+          builder: (context, scrollController) {
+            return Consumer(
+              builder: (context, ref, child) {
+                final menu = ref.watch(menuProvider);
+                return SafeArea(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                    child: MenuManagement(menu: menu),
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );

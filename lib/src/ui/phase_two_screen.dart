@@ -121,6 +121,8 @@ class _OperationsHubHome extends ConsumerWidget {
         )
         .length;
 
+    final role = ref.watch(userRoleProvider);
+
     final modules = [
       _HubModule(
         title: 'Kitchen',
@@ -137,34 +139,36 @@ class _OperationsHubHome extends ConsumerWidget {
         color: AppColors.teal,
         body: const RiderDispatchTab(),
       ),
-      _HubModule(
-        title: 'Customers',
-        caption: '${customers.length} CRM profiles',
-        icon: Iconsax.profile_2user,
-        color: AppColors.blue,
-        body: const CustomerCrmTab(),
-      ),
-      _HubModule(
-        title: 'Growth',
-        caption: '${campaigns.length} campaigns and reviews',
-        icon: Iconsax.notification,
-        color: AppColors.saffron,
-        body: const GrowthTab(),
-      ),
-      _HubModule(
-        title: 'Branches',
-        caption: '${branches.length} service locations',
-        icon: Iconsax.buildings,
-        color: AppColors.success,
-        body: const BranchManagementTab(),
-      ),
-      _HubModule(
-        title: 'Intelligence',
-        caption: '${recommendations.length} actions and brand tools',
-        icon: Iconsax.lamp_on,
-        color: AppColors.danger,
-        body: const IntelligenceTab(),
-      ),
+      if (role != UserRole.staff) ...[
+        _HubModule(
+          title: 'Customers',
+          caption: '${customers.length} CRM profiles',
+          icon: Iconsax.profile_2user,
+          color: AppColors.blue,
+          body: const CustomerCrmTab(),
+        ),
+        _HubModule(
+          title: 'Growth',
+          caption: '${campaigns.length} campaigns and reviews',
+          icon: Iconsax.notification,
+          color: AppColors.saffron,
+          body: const GrowthTab(),
+        ),
+        _HubModule(
+          title: 'Branches',
+          caption: '${branches.length} service locations',
+          icon: Iconsax.buildings,
+          color: AppColors.success,
+          body: const BranchManagementTab(),
+        ),
+        _HubModule(
+          title: 'Intelligence',
+          caption: '${recommendations.length} actions and brand tools',
+          icon: Iconsax.lamp_on,
+          color: AppColors.danger,
+          body: const IntelligenceTab(),
+        ),
+      ],
     ];
 
     return _PhaseScroll(

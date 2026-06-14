@@ -21,6 +21,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   late String _role = _normalizeRole(widget.initialRole);
   bool _otpSent = false;
 
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _inputController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    _otpController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final restaurant = ref.watch(restaurantProvider);
@@ -40,146 +51,207 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           constraints: const BoxConstraints(maxWidth: 560),
           child: SingleChildScrollView(
             padding: const EdgeInsets.fromLTRB(18, 12, 18, 28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Surface(
-                  child: Row(
-                    children: [
-                      Logo(initials: restaurant.logoInitials, size: 44),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              restaurant.appName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Text(
-                              _roleSubtitle,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(color: AppColors.muted),
-                            ),
-                          ],
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Surface(
+                    child: Row(
+                      children: [
+                        Logo(initials: restaurant.logoInitials, size: 44),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                restaurant.appName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              Text(
+                                _roleSubtitle,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(color: AppColors.muted),
+                              ),
+                            ],
+                          ),
                         ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Continue as',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      ChoicePill(
+                        label: 'Customer',
+                        icon: Iconsax.user,
+                        selected: _role == 'customer',
+                        onTap: () => setState(() {
+                          _role = 'customer';
+                          _otpSent = false;
+                          _inputController.clear();
+                          _otpController.clear();
+                          _formKey.currentState?.reset();
+                        }),
+                      ),
+                      ChoicePill(
+                        label: 'Owner',
+                        icon: Iconsax.shop,
+                        selected: _role == 'owner',
+                        onTap: () => setState(() {
+                          _role = 'owner';
+                          _otpSent = false;
+                          _inputController.clear();
+                          _otpController.clear();
+                          _formKey.currentState?.reset();
+                        }),
+                      ),
+                      ChoicePill(
+                        label: 'Staff',
+                        icon: Iconsax.profile_2user,
+                        selected: _role == 'staff',
+                        onTap: () => setState(() {
+                          _role = 'staff';
+                          _otpSent = false;
+                          _inputController.clear();
+                          _otpController.clear();
+                          _formKey.currentState?.reset();
+                        }),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'Continue as',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ChoicePill(
-                      label: 'Customer',
-                      icon: Iconsax.user,
-                      selected: _role == 'customer',
-                      onTap: () => setState(() {
-                        _role = 'customer';
-                        _otpSent = false;
-                      }),
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    controller: _inputController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Iconsax.sms),
+                      labelText: _role == 'customer'
+                          ? 'Phone or email'
+                          : 'Work email',
+                      hintText: _role == 'customer'
+                          ? '0300 0000000'
+                          : 'owner@restaurant.com',
                     ),
-                    ChoicePill(
-                      label: 'Owner',
-                      icon: Iconsax.shop,
-                      selected: _role == 'owner',
-                      onTap: () => setState(() {
-                        _role = 'owner';
-                        _otpSent = false;
-                      }),
-                    ),
-                    ChoicePill(
-                      label: 'Staff',
-                      icon: Iconsax.profile_2user,
-                      selected: _role == 'staff',
-                      onTap: () => setState(() {
-                        _role = 'staff';
-                        _otpSent = false;
-                      }),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return _role == 'customer'
+                            ? 'Please enter phone or email'
+                            : 'Please enter work email';
+                      }
+                      final trimmed = value.trim();
+                      if (_role == 'customer') {
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                        final phoneRegex = RegExp(r'^[0-9+\-\s()]{7,15}$');
+                        if (!emailRegex.hasMatch(trimmed) && !phoneRegex.hasMatch(trimmed)) {
+                          return 'Please enter a valid phone or email';
+                        }
+                      } else {
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                        if (!emailRegex.hasMatch(trimmed)) {
+                          return 'Please enter a valid email address';
+                        }
+                      }
+                      return null;
+                    },
+                  ),
+                  if (_otpSent) ...[
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _otpController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(Iconsax.password_check),
+                        labelText: 'OTP code',
+                        hintText: '123456',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter OTP code';
+                        }
+                        final trimmed = value.trim();
+                        if (trimmed.length != 6 || int.tryParse(trimmed) == null) {
+                          return 'OTP code must be 6 digits';
+                        }
+                        return null;
+                      },
                     ),
                   ],
-                ),
-                const SizedBox(height: 18),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Iconsax.sms),
-                    labelText: _role == 'customer'
-                        ? 'Phone or email'
-                        : 'Work email',
-                    hintText: _role == 'customer'
-                        ? '0300 0000000'
-                        : 'owner@restaurant.com',
-                  ),
-                ),
-                if (_otpSent) ...[
-                  const SizedBox(height: 12),
-                  TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Iconsax.password_check),
-                      labelText: 'OTP code',
-                      hintText: '123456',
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        if (_otpSent) {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            ref.read(userRoleProvider.notifier).setRole(
+                                  _role == 'customer'
+                                      ? UserRole.customer
+                                      : (_role == 'owner'
+                                          ? UserRole.owner
+                                          : UserRole.staff),
+                                );
+                            context.go(
+                              _role == 'customer'
+                                  ? '/'
+                                  : (_role == 'owner' ? '/dashboard' : '/workspace'),
+                            );
+                          }
+                        } else {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            setState(() => _otpSent = true);
+                          }
+                        }
+                      },
+                      icon: Icon(_otpSent ? Iconsax.login : Iconsax.send_2),
+                      label: Text(_otpSent ? 'Continue' : 'Send OTP'),
                     ),
                   ),
-                ],
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      if (_otpSent) {
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
                         ref.read(userRoleProvider.notifier).setRole(
                               _role == 'customer'
                                   ? UserRole.customer
-                                  : UserRole.admin,
+                                  : (_role == 'owner'
+                                      ? UserRole.owner
+                                      : UserRole.staff),
                             );
-                        context.go(_role == 'customer' ? '/' : '/workspace');
-                      } else {
-                        setState(() => _otpSent = true);
-                      }
-                    },
-                    icon: Icon(_otpSent ? Iconsax.login : Iconsax.send_2),
-                    label: Text(_otpSent ? 'Continue' : 'Send OTP'),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      ref.read(userRoleProvider.notifier).setRole(
-                            _role == 'customer'
-                                ? UserRole.customer
-                                : UserRole.admin,
-                          );
-                      context.go(_role == 'customer' ? '/' : '/workspace');
-                    },
-                    icon: Icon(
-                      _role == 'customer'
-                          ? Iconsax.shop
-                          : Iconsax.cpu_setting,
-                      color: primary,
-                    ),
-                    label: Text(
-                      _role == 'customer'
-                          ? 'Preview customer app'
-                          : 'Preview operations',
+                        context.go(
+                          _role == 'customer'
+                              ? '/'
+                              : (_role == 'owner' ? '/dashboard' : '/workspace'),
+                        );
+                      },
+                      icon: Icon(
+                        _role == 'customer'
+                            ? Iconsax.shop
+                            : Iconsax.cpu_setting,
+                        color: primary,
+                      ),
+                      label: Text(
+                        _role == 'customer'
+                            ? 'Preview customer app'
+                            : 'Preview operations',
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

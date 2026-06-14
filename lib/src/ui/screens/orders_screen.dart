@@ -10,7 +10,13 @@ class OrdersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orders = ref.watch(ordersProvider);
+    final role = ref.watch(userRoleProvider);
+    final customer = ref.watch(customerProvider);
     final width = MediaQuery.sizeOf(context).width;
+
+    final filteredOrders = role == UserRole.customer
+        ? orders.where((order) => order.customerId == customer.userId).toList()
+        : orders;
 
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(
@@ -27,7 +33,7 @@ class OrdersScreen extends ConsumerWidget {
             children: [
               const SectionTitle(title: 'Orders'),
               const SizedBox(height: 12),
-              for (final order in orders) ...[
+              for (final order in filteredOrders) ...[
                 OrderCard(order: order),
                 const SizedBox(height: 12),
               ],

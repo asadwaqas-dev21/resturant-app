@@ -15,7 +15,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final customer = ref.watch(customerProvider);
+    ref.watch(customerProvider);
     final restaurant = ref.watch(restaurantProvider);
 
     return Scaffold(
@@ -103,18 +103,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   _SettingsItem(
                     title: 'Language',
-                    trailingText: restaurant.urduEnabled ? 'Urdu' : 'English',
+                    trailingText: restaurant.urduEnabled ? 'Arabic' : 'English',
                     onTap: () {
                       ref.read(restaurantProvider.notifier).toggleUrdu();
                     },
                   ),
-                  _SettingsItem(
-                    title: 'Country',
-                    trailingText: 'Kuwait',
-                    onTap: () {
-                      _showCountryDialog(context);
-                    },
-                  ),
+
                   _SettingsItem(
                     title: 'Log out',
                     onTap: () {
@@ -252,25 +246,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
-
-  void _showCountryDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Country / Region'),
-        content: const Text(
-          'Active operating region is locked to Kuwait based on your location settings.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
           ),
         ],
       ),

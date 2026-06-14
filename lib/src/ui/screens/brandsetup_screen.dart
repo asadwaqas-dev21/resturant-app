@@ -30,7 +30,7 @@ class BrandSetupScreen extends ConsumerWidget {
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 560),
+            constraints: const BoxConstraints(maxWidth: double.infinity),
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(18, 12, 18, 28),
               child: Column(

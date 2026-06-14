@@ -68,12 +68,13 @@ class DesktopNav extends ConsumerWidget {
             currentPath: currentPath,
           ),
           if (!isCustomer) ...[
-            _NavItem(
-              label: 'Operations',
-              icon: Iconsax.chart_square,
-              path: '/dashboard',
-              currentPath: currentPath,
-            ),
+            if (role == UserRole.owner)
+              _NavItem(
+                label: 'Operations',
+                icon: Iconsax.chart_square,
+                path: '/dashboard',
+                currentPath: currentPath,
+              ),
             _NavItem(
               label: 'Ops Hub',
               icon: Iconsax.cpu_setting,

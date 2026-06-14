@@ -44,15 +44,17 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
 
     if (email.isEmpty || confirmEmail.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all email and password fields.')),
+        const SnackBar(
+          content: Text('Please fill in all email and password fields.'),
+        ),
       );
       return;
     }
 
     if (email != confirmEmail) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Emails do not match.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Emails do not match.')));
       return;
     }
 
@@ -69,25 +71,26 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
     try {
       if (_isSupabaseInitialized()) {
         final client = Supabase.instance.client;
-        
-        await client.auth.updateUser(
-          UserAttributes(
-            email: email,
-          ),
-        );
+
+        await client.auth.updateUser(UserAttributes(email: email));
       }
 
       setState(() => _isLoading = false);
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Verification links sent to your emails. Please confirm the change.'),
+          content: Text(
+            'Verification links sent to your emails. Please confirm the change.',
+          ),
           backgroundColor: AppColors.success,
         ),
       );
+      // ignore: use_build_context_synchronously
       context.go('/settings');
     } catch (e) {
       setState(() => _isLoading = false);
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to update email: $e'),
@@ -116,7 +119,10 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
                       height: 44,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
+                        border: Border.all(
+                          color: const Color(0xFFE0E0E0),
+                          width: 1,
+                        ),
                         color: Colors.white,
                       ),
                       alignment: Alignment.center,
@@ -164,7 +170,8 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
                       controller: _passwordController,
                       hint: 'Current password',
                       obscure: _obscurePassword,
-                      onToggle: () => setState(() => _obscurePassword = !_obscurePassword),
+                      onToggle: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
                     ),
                   ],
                 ),
@@ -217,34 +224,15 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
     required String hint,
     required TextInputType keyboardType,
   }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-        borderRadius: BorderRadius.circular(12),
+    return TextField(
+      controller: controller,
+      keyboardType: keyboardType,
+      style: const TextStyle(
+        color: Color(0xFF1E1E1E),
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
       ),
-      child: TextField(
-        controller: controller,
-        keyboardType: keyboardType,
-        style: const TextStyle(
-          color: Color(0xFF1E1E1E),
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: const TextStyle(
-            color: Color(0xFF8E8E8E),
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
-          border: InputBorder.none,
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(vertical: 10),
-        ),
-      ),
+      decoration: InputDecoration(labelText: hint, hintText: hint),
     );
   }
 
@@ -254,49 +242,25 @@ class _ChangeEmailScreenState extends ConsumerState<ChangeEmailScreen> {
     required bool obscure,
     required VoidCallback onToggle,
   }) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: const Color(0xFFE0E0E0), width: 1),
-        borderRadius: BorderRadius.circular(12),
+    return TextField(
+      controller: controller,
+      obscureText: obscure,
+      style: const TextStyle(
+        color: Color(0xFF1E1E1E),
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: controller,
-              obscureText: obscure,
-              style: const TextStyle(
-                color: Color(0xFF1E1E1E),
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: InputDecoration(
-                hintText: hint,
-                hintStyle: const TextStyle(
-                  color: Color(0xFF8E8E8E),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
-              ),
-            ),
+      decoration: InputDecoration(
+        labelText: hint,
+        hintText: hint,
+        suffixIcon: IconButton(
+          icon: Icon(
+            obscure ? Iconsax.eye : Iconsax.eye_slash,
+            color: const Color(0xFF1E1E1E),
+            size: 20,
           ),
-          IconButton(
-            icon: Icon(
-              obscure ? Iconsax.eye : Iconsax.eye_slash,
-              color: const Color(0xFF1E1E1E),
-              size: 20,
-            ),
-            onPressed: onToggle,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-          ),
-        ],
+          onPressed: onToggle,
+        ),
       ),
     );
   }

@@ -653,6 +653,7 @@ class Order {
     required this.estimatedReadyAt,
     this.riderName,
     this.specialInstructions = '',
+    this.customerId = '',
   });
 
   final String id;
@@ -671,6 +672,7 @@ class Order {
   final DateTime estimatedReadyAt;
   final String? riderName;
   final String specialInstructions;
+  final String customerId;
 
   int get itemCount => lines.fold(0, (sum, line) => sum + line.quantity);
 
@@ -678,6 +680,7 @@ class Order {
     OrderStatus? status,
     String? paymentStatus,
     String? riderName,
+    String? customerId,
   }) {
     return Order(
       id: id,
@@ -696,6 +699,7 @@ class Order {
       estimatedReadyAt: estimatedReadyAt,
       riderName: riderName ?? this.riderName,
       specialInstructions: specialInstructions,
+      customerId: customerId ?? this.customerId,
     );
   }
 }

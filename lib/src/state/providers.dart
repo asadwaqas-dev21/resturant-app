@@ -39,7 +39,7 @@ final cartProvider = NotifierProvider<CartController, CartState>(
   CartController.new,
 );
 
-enum UserRole { customer, admin }
+enum UserRole { customer, owner, staff }
 
 class UserRoleNotifier extends Notifier<UserRole> {
   @override
@@ -182,6 +182,10 @@ class MenuController extends Notifier<List<MenuItem>> {
         else
           item,
     ];
+  }
+
+  void addItem(MenuItem item) {
+    state = [...state, item];
   }
 }
 
@@ -387,6 +391,7 @@ class OrdersController extends Notifier<List<Order>> {
         estimatedReadyAt: now.add(const Duration(minutes: 18)),
         riderName: 'Hamza R.',
         specialInstructions: 'No onions on the burger.',
+        customerId: 'demo-customer',
       ),
       Order(
         id: 'order-1084',
@@ -406,6 +411,7 @@ class OrdersController extends Notifier<List<Order>> {
         tax: 34.9,
         total: demoMenu[2].price + demoMenu[7].price * 2 + 34.9,
         estimatedReadyAt: now.add(const Duration(minutes: 4)),
+        customerId: 'other-customer',
       ),
       Order(
         id: 'order-1083',
@@ -423,6 +429,7 @@ class OrdersController extends Notifier<List<Order>> {
         total: demoMenu[4].price - 150 + demoRestaurant.deliveryFee + 62.45,
         estimatedReadyAt: now.subtract(const Duration(hours: 1, minutes: 30)),
         riderName: 'Sara M.',
+        customerId: 'demo-customer',
       ),
     ];
   }
@@ -437,6 +444,7 @@ class OrdersController extends Notifier<List<Order>> {
     final paymentStatus = cart.paymentMethod == PaymentMethod.cash
         ? 'pending'
         : 'paid';
+    final customer = ref.read(customerProvider);
     final order = Order(
       id: 'order-$orderNumber',
       orderNumber: orderNumber,
@@ -456,6 +464,7 @@ class OrdersController extends Notifier<List<Order>> {
       ),
       riderName: cart.orderType == OrderType.delivery ? 'Unassigned' : null,
       specialInstructions: cart.notes,
+      customerId: customer.userId,
     );
     state = [order, ...state];
     return order;

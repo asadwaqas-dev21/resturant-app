@@ -55,13 +55,39 @@ void main() {
 
     expect(find.text('Kitchen'), findsOneWidget);
     expect(find.text('Riders'), findsOneWidget);
-    expect(find.text('Customers'), findsOneWidget);
+    expect(find.text('Customers'), findsNothing);
 
     await tester.tap(find.text('Kitchen'));
     await tester.pumpAndSettle();
 
     expect(find.text('Kitchen display'), findsOneWidget);
     expect(find.text('Operations'), findsNothing);
+  });
+
+  testWidgets('owner sees all workspace modules', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Owner'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview operations'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Revenue'), findsOneWidget);
+
+    await tester.tap(find.text('Ops'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Kitchen'), findsOneWidget);
+    expect(find.text('Riders'), findsOneWidget);
+    expect(find.text('Customers'), findsOneWidget);
+    expect(find.text('Growth'), findsOneWidget);
+    expect(find.text('Branches'), findsOneWidget);
+    expect(find.text('Intelligence'), findsOneWidget);
   });
 
   testWidgets('opens restaurant brand setup', (tester) async {
@@ -74,5 +100,29 @@ void main() {
     expect(find.text('Brand setup'), findsOneWidget);
     expect(find.text('Client preset'), findsOneWidget);
     expect(find.text('Launch checklist'), findsOneWidget);
+  });
+
+  testWidgets('owner/staff opens menu control from account screen', (tester) async {
+    await tester.pumpWidget(const ProviderScope(child: RestaurantOsApp()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Staff operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Owner'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Preview operations'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Account'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Menu control'), findsOneWidget);
+    await tester.tap(find.text('Menu control'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.byTooltip('Add menu item'), findsOneWidget);
   });
 }

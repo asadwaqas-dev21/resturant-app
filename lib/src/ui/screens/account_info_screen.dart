@@ -272,70 +272,35 @@ class _AccountInfoScreenState extends ConsumerState<AccountInfoScreen> {
     VoidCallback? onTap,
     bool readOnly = false,
   }) {
-    // Determine field background and border based on enabled state
-    final bool showInputOutline = enabled && !readOnly;
-    
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: showInputOutline ? Colors.white : const Color(0xFFF5F5F5),
-        border: showInputOutline ? Border.all(color: const Color(0xFFE0E0E0), width: 1) : null,
-        borderRadius: BorderRadius.circular(12),
+    return TextField(
+      controller: controller,
+      enabled: enabled,
+      readOnly: readOnly,
+      onTap: onTap,
+      style: const TextStyle(
+        color: Color(0xFF1E1E1E),
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              color: Color(0xFF8E8E8E),
-              fontSize: 11,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Row(
-            children: [
-              Expanded(
-                child: showInputOutline
-                    ? TextField(
-                        controller: controller,
-                        style: const TextStyle(
-                          color: Color(0xFF1E1E1E),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
-                          border: InputBorder.none,
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: onTap,
-                        child: Text(
-                          controller.text.isNotEmpty ? controller.text : label,
-                          style: TextStyle(
-                            color: controller.text.isNotEmpty ? const Color(0xFF1E1E1E) : const Color(0xFF8E8E8E),
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-              ),
-              if (suffixIcon != null && (enabled || onTap != null))
-                GestureDetector(
-                  onTap: onTap,
-                  child: Icon(
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: label,
+        suffixIcon: suffixIcon != null
+            ? (onTap != null
+                ? GestureDetector(
+                    onTap: onTap,
+                    child: Icon(
+                      suffixIcon,
+                      color: const Color(0xFF8E8E8E),
+                      size: 20,
+                    ),
+                  )
+                : Icon(
                     suffixIcon,
                     color: const Color(0xFF8E8E8E),
                     size: 20,
-                  ),
-                ),
-            ],
-          ),
-        ],
+                  ))
+            : null,
       ),
     );
   }
